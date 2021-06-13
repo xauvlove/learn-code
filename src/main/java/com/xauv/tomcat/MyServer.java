@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URL;
 
 /**
  * @Date 2021/06/12 13:39
@@ -29,7 +30,7 @@ import java.net.Socket;
 public class MyServer {
 
     public static void main(String[] args) throws Exception {
-        ServerSocket serverSocket = new ServerSocket(8080);
+        ServerSocket serverSocket = new ServerSocket(8081);
         Socket client = serverSocket.accept();
         InputStream inputStream = client.getInputStream();
         OutputStream outputStream = client.getOutputStream();
