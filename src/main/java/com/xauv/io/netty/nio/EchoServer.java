@@ -58,7 +58,7 @@ public class EchoServer {
             // 阻塞 直到 channel 关闭
             sync.channel().closeFuture().sync();
         } finally {
-            group.shutdownGracefully();
+            group.shutdownGracefully().sync();
         }
     }
 

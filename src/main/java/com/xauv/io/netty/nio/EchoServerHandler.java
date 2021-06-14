@@ -52,6 +52,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         // 发送空内容 并且flush完成之后关闭连接 ChannelFutureListener.CLOSE
+        // 连接关闭之后，客户端 channel 关闭，会自动解除阻塞 完成客户端关闭流程
         ctx.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
     }
 

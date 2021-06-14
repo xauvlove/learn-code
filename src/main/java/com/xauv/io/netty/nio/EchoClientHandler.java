@@ -44,6 +44,7 @@ public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         // 当 channel 连接建立完成之后 向服务器发送数据
         ctx.writeAndFlush(Unpooled.copiedBuffer("hello netty", StandardCharsets.UTF_8));
+        System.out.println("发送消息成功");
     }
 
     /**

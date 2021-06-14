@@ -54,7 +54,7 @@ public class EchoClient {
             // 只要通道不关闭 应用程序就会一直阻塞
             sync.channel().closeFuture().sync();
         } finally {
-            group.shutdownGracefully();
+            group.shutdownGracefully().sync();
         }
     }
 
