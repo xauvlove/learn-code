@@ -1,4 +1,4 @@
-package com.xauv.aio.server;
+package com.xauv.io.nio;
 
 /*
        /\   /\             /\.__                      
@@ -10,16 +10,16 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
 */
 
 /**
- * @Date 2021/06/13 17:29
+ * @Date 2021/06/14 14:05
  * @Author ling yue
- * @Package com.xauv.aio.server
+ * @Package com.xauv.io.nio
  * @Desc
  */
-public class AIOServer {
+public class NIOServer {
 
     public static void main(String[] args) {
-        AIOServerHandler aioServerHandler = new AIOServerHandler(8002);
-        aioServerHandler.init();
-        new Thread(aioServerHandler).start();
+        NIOServerHandler nioServerHandler = new NIOServerHandler(8003);
+        Thread t = new Thread(nioServerHandler);
+        t.start();
     }
 }

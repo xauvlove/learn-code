@@ -1,4 +1,4 @@
-package com.xauv.nio;
+package com.xauv.io.buffer;
 
 /*
        /\   /\             /\.__                      
@@ -20,7 +20,7 @@ import java.util.Arrays;
 /**
  * @Date 2021/06/12 12:05
  * @Author ling yue
- * @Package com.xauv.nio
+ * @Package com.xauv.io.nio
  * @Desc
  */
 public class Buffer {

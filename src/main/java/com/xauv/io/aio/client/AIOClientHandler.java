@@ -1,4 +1,4 @@
-package com.xauv.aio.client;
+package com.xauv.io.aio.client;
 
 /*
        /\   /\             /\.__                      
@@ -19,7 +19,7 @@ import java.util.concurrent.CountDownLatch;
 /**
  * @Date 2021/06/13 16:38
  * @Author ling yue
- * @Package com.xauv.aio.client
+ * @Package com.xauv.io.aio.client
  * @Desc
  * 这个类是用来 将客户端和服务端连接 和 写数据 的
  * 是异步连接，什么时候连接到我们不知道

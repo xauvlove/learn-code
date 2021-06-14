@@ -1,4 +1,4 @@
-package com.xauv.aio.client;
+package com.xauv.io.aio.client;
 
 /*
        /\   /\             /\.__                      
@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * @Date 2021/06/13 16:46
  * @Author ling yue
- * @Package com.xauv.aio.client
+ * @Package com.xauv.io.aio.client
  * @Desc
  */
 public class AOIClient {

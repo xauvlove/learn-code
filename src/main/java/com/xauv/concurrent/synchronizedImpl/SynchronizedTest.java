@@ -1,5 +1,8 @@
 package com.xauv.concurrent.synchronizedImpl;
 
+import org.openjdk.jol.info.ClassLayout;
+
+import java.io.PipedInputStream;
 import java.util.concurrent.TimeUnit;
 
 public class SynchronizedTest {
@@ -33,10 +36,11 @@ public class SynchronizedTest {
         }
     }
 
-    public static void main(String[] args) {
-        SynchronizedTest synchronizedTest1 = new SynchronizedTest();
+    public static void main(String[] args) throws InterruptedException {
+       /* SynchronizedTest synchronizedTest1 = new SynchronizedTest();
         SynchronizedTest synchronizedTest2 = new SynchronizedTest();
         new Thread(synchronizedTest1::accessResource3).start();
-        new Thread(synchronizedTest2::accessResource3).start();
+        new Thread(synchronizedTest2::accessResource3).start();*/
+        PipedInputStream i = new PipedInputStream();
     }
 }

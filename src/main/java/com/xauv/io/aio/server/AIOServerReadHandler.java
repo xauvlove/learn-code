@@ -1,4 +1,4 @@
-package com.xauv.aio.server;
+package com.xauv.io.aio.server;
 
 /*
        /\   /\             /\.__                      
@@ -9,8 +9,6 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
       \/     \/                                    \/
 */
 
-import lombok.SneakyThrows;
-
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
@@ -19,7 +17,7 @@ import java.nio.channels.CompletionHandler;
 /**
  * @Date 2021/06/13 17:43
  * @Author ling yue
- * @Package com.xauv.aio.server
+ * @Package com.xauv.io.aio.server
  * @Desc
  */
 public class AIOServerReadHandler implements CompletionHandler<Integer, ByteBuffer> {
