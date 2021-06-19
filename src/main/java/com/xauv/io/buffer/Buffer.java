@@ -9,12 +9,15 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
       \/     \/                                    \/
 */
 
+import lombok.SneakyThrows;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -26,9 +29,31 @@ import java.util.Arrays;
 public class Buffer {
 
     public static void main(String[] args) throws Exception {
-
+        learnBufferScatter();
     }
 
+    /**
+     * scattering 将 channel 数据依次读入到 buffer 数组
+     * gathering 将 buffer 数组的数据依次写入 channel
+     */
+    @SneakyThrows
+    public static void learnBufferScatter() {
+        // 先写一个文件 作数据准备
+        FileOutputStream outputStream = new FileOutputStream("D:\\test.txt");
+        byte[] bytes = new byte[]{(byte)'a', (byte)'b', (byte)'c', (byte)'d', (byte)'e'};
+        outputStream.write(bytes);
+        outputStream.flush();
+        outputStream.close();
+
+        // 把文件内容读到 buffer
+        FileInputStream inputStream = new FileInputStream("D:\\test.txt");
+        FileChannel channel = inputStream.getChannel();
+        ByteBuffer[] byteBuffers = {ByteBuffer.allocate(2), ByteBuffer.allocate(2)};
+        channel.read(byteBuffers);
+        String readString = new String(byteBuffers[0].array()) +  new String(byteBuffers[1].array());
+        System.out.println(readString);
+        channel.close();
+    }
 
     /**
      * 文件内存直接映射

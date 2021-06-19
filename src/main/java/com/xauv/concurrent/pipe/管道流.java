@@ -9,6 +9,7 @@ package com.xauv.concurrent.pipe;
  * \/     \/                                    \/
  */
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;

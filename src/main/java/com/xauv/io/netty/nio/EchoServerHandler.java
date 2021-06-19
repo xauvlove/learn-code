@@ -27,6 +27,7 @@ import java.nio.charset.StandardCharsets;
 // 服务器的这个 handler 可能在不同的客户端(channel)之间进行共享
 // 服务器这边可以只 new 一个 handler 实例，然后所有的客户端都使用这个 handler，存在线程安全问题
 // 这个 handler 的实现必须是线程安全的
+// 如果不用这个注解，那么将 handler 加入到 pipeline 时，必须 new 不同实例
 @ChannelHandler.Sharable
 public class EchoServerHandler extends ChannelInboundHandlerAdapter {
 
@@ -41,7 +42,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ByteBuf buffer = (ByteBuf) msg;
         System.out.println("服务端接收到的数据：" + buffer.toString(StandardCharsets.UTF_8));
-        ctx.write(ctx);
+        ctx.write(buffer);
     }
 
     /**
