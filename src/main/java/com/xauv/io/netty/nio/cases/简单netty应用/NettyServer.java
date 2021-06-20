@@ -20,7 +20,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 /**
  * @Date 2021/06/19 21:19
  * @Author ling yue
- * @Package com.xauv.io.netty.nio.simple.netty.nio.cases
+ * @Package com.xauv.io.netty.nio.cases.simple.netty.nio.cases
  * @Desc
  */
 public class NettyServer {

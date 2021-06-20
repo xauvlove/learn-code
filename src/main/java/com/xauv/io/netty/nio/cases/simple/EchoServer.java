@@ -1,4 +1,4 @@
-package com.xauv.io.netty.nio.simple;
+package com.xauv.io.netty.nio.cases.simple;
 
 /*
        /\   /\             /\.__                      
