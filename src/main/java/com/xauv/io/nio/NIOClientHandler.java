@@ -17,6 +17,8 @@ import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -61,23 +63,24 @@ public class NIOClientHandler implements Runnable {
         while (start) {
             selector.select();
             Set<SelectionKey> selectionKeys = selector.selectedKeys();
-            for (SelectionKey selectionKey : selectionKeys) {
-                selectionKeys.remove(selectionKey);
-                if (!selectionKey.isValid()) {
-                    continue;
-                }
+            Iterator<SelectionKey> iterator = selectionKeys.iterator();
+            if (iterator.hasNext()) {
+                SelectionKey selectionKey = iterator.next();
                 handleInput(selectionKey);
-                selectionKey.cancel();
-                selectionKey.channel().close();
             }
+            iterator.remove();
         }
     }
 
     @SneakyThrows
     private void handleInput(SelectionKey selectionKey) {
-        if (!selectionKey.isConnectable()) {
-            System.out.println("未连接状态");
-            System.exit(1);
+        if (selectionKey.isConnectable()) {
+            // 连接完成之后 向服务端发送数据
+            String content = "xauvlove";
+            ByteBuffer wrap = ByteBuffer.wrap(content.getBytes(StandardCharsets.UTF_8));
+            socketChannel.write(wrap);
+            System.out.println("已向服务器发送数据");
+            return;
         }
 
         if (selectionKey.isReadable()) {
@@ -104,7 +107,19 @@ public class NIOClientHandler implements Runnable {
         boolean connect = socketChannel.connect(new InetSocketAddress(host, port));
         // 如果不能立即连接成功，则注册连接事件
         if (!connect) {
-            socketChannel.register(selector, SelectionKey.OP_CONNECT);
+            try {
+                socketChannel.register(selector, SelectionKey.OP_CONNECT);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+      /*  if (!connect) {
+            while (!socketChannel.finishConnect()){}
+        }*/
+       /* // 连接完成之后 向服务端发送数据
+        String content = "xauvlove";
+        ByteBuffer wrap = ByteBuffer.wrap(content.getBytes(StandardCharsets.UTF_8));
+        socketChannel.write(wrap);
+        System.out.println("已向服务器发送数据");*/
     }
 }

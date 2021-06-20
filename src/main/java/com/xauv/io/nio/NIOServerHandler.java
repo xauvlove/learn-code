@@ -11,9 +11,11 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
 
 import lombok.SneakyThrows;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -49,20 +51,27 @@ public class NIOServerHandler implements Runnable {
         System.out.println("服务端已启动成功");
     }
 
-    @SneakyThrows
     @Override
     public void run() {
 
         while (start) {
             //  selector.select(); 是阻塞的，如果  selector 没有任何事件，那么阻塞在这里
-            selector.select();
-            Set<SelectionKey> selectionKeys = selector.selectedKeys();
-            for (SelectionKey selectionKey : selectionKeys) {
-                if (!selectionKey.isValid()) {
+            try {
+                int select = selector.select(1000);
+                if (select <= 0) {
+                    System.out.println("服务端等待 1 秒仍然无连接");
                     continue;
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Set<SelectionKey> selectionKeys = selector.selectedKeys();
+            Iterator<SelectionKey> iterator = selectionKeys.iterator();
+            if (iterator.hasNext()) {
+                SelectionKey selectionKey = iterator.next();
                 handleOptions(selectionKey);
             }
+            iterator.remove();
         }
     }
 
@@ -82,17 +91,14 @@ public class NIOServerHandler implements Runnable {
     @SneakyThrows
     private void handleReadOption(SelectionKey selectionKey) {
         SocketChannel channel = (SocketChannel) selectionKey.channel();
-        ByteBuffer buffer = ByteBuffer.allocate(1024);
+        // attachment
+        ByteBuffer buffer = (ByteBuffer) selectionKey.attachment();
         int length = channel.read(buffer);
         if (length > 0) {
             buffer.flip();
             byte[] bytes = new byte[length];
             buffer.get(bytes);
             System.out.println("从客户端接收到的消息：" + new String(bytes));
-        } else {
-            selectionKey.channel().close();
-            // 取消注册事件监听
-            selectionKey.cancel();
         }
     }
 
@@ -100,12 +106,11 @@ public class NIOServerHandler implements Runnable {
      * 处理 accept 事件
      * @param selectionKey
      */
-    @SneakyThrows
-    private void handleAcceptOption(SelectionKey selectionKey) {
-        ServerSocketChannel serverSocketChannel = (ServerSocketChannel) selectionKey.channel();
+    private void handleAcceptOption(SelectionKey selectionKey) throws Exception {
+        //ServerSocketChannel socketChannel = (ServerSocketChannel) selectionKey.channel();
         SocketChannel accept = serverSocketChannel.accept();
         accept.configureBlocking(false);
         // 接受了一个客户端的接入，那么接下来就应该为这个客户端注册 读事件，以对客户端发送的消息接收
-        accept.register(selector, SelectionKey.OP_READ);
+        accept.register(selector, SelectionKey.OP_READ, ByteBuffer.allocate(1024));
     }
 }

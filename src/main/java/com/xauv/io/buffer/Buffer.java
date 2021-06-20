@@ -29,12 +29,14 @@ import java.util.Arrays;
 public class Buffer {
 
     public static void main(String[] args) throws Exception {
-        learnBufferScatter();
+
     }
 
     /**
      * scattering 将 channel 数据依次读入到 buffer 数组
+     *  分散读
      * gathering 将 buffer 数组的数据依次写入 channel
+     *  聚集写
      */
     @SneakyThrows
     public static void learnBufferScatter() {

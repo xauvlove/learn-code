@@ -1,4 +1,4 @@
-package com.xauv.io.netty.nio;
+package com.xauv.io.netty.nio.simple;
 
 /*
        /\   /\             /\.__                      

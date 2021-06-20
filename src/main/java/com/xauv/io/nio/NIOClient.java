@@ -18,7 +18,7 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
 public class NIOClient {
 
     public static void main(String[] args) {
-        NIOClientHandler nioClientHandler = new NIOClientHandler("localhost", 8003);
+        NIOClientHandler nioClientHandler = new NIOClientHandler("127.0.0.1", 8003);
         Thread t = new Thread(nioClientHandler);
         t.start();
     }
