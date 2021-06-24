@@ -1,0 +1,41 @@
+// 协议版本
+syntax = "proto3";
+// 加快解析
+option optimize_for = SPEED;
+// 指定生成在哪个包下
+option java_package = "com.xauv.io.netty.nio.cases.编解码.codec";
+// 外部类名称
+option java_outer_classname = "MyDataInfo";
+
+// protobuf 可以使用 message 管理其他的 message
+message  MyMessage {
+    // 定义一个枚举类型，表示 MyMessage 包含哪些子类型
+    enum DataType {
+        // proto 要求 enum 的编号从 0 开始
+        StudentType = 0;
+        WorkerType = 1;
+    }
+    // 用 data_type 来标识需要传哪个类型<枚举>
+    DataType data_type = 1;
+    // oneof 表示每次枚举类型最多只能出现其中一个
+    oneof dataBody {
+        Student student = 2;
+        Worker worker = 3;
+    }
+
+    // 如果想传多个 那么可以这么写
+    // 不加 oneof
+    /*Student student = 2;
+    Worker worker = 3;*/
+}
+
+message Student{
+    int32 id = 1;
+    string name = 2;
+}
+
+message Worker {
+    string name = 1;
+    int32 age = 2;
+}
+
