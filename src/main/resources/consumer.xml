@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <dubbo:application name="spring-dubbo-client"></dubbo:application>
+    <dubbo:registry address="multicast://224.1.1.1:9333"></dubbo:registry>
+    <dubbo:reference id="userService" interface="com.xauv.dubbo.combinespring.UserService"></dubbo:reference>
+</beans>
