@@ -1,4 +1,4 @@
-package com.xauv.dubbo.combinespring;
+package com.xauv.dubbo.combinespring.start;
 
 /*
        /\   /\             /\.__                      
@@ -13,19 +13,19 @@ import lombok.SneakyThrows;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * @Date 2021/06/26 15:04
+ * @Date 2021/06/26 14:48
  * @Author ling yue
- * @Package com.xauv.dubbo.combinespring
+ * @Package com.xauv.dubbo.集成spring
  * @Desc
  */
-public class SpringDubboClient {
+public class SpringDubboServer {
 
     @SneakyThrows
     public static void main(String[] args) {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext();
-        context.setConfigLocation("consumer.xml");
+        context.setConfigLocation("provider.xml");
         context.refresh();
-        UserService userService = context.getBean(UserService.class);
-        System.out.println(userService.hello());
+        System.out.println("服务器启动成功");
+        System.in.read();
     }
 }

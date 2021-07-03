@@ -1,4 +1,4 @@
-package com.xauv.dubbo.combinespring;
+package com.xauv.dubbo.combinespring.service;
 
 /*
        /\   /\             /\.__                      
@@ -15,10 +15,7 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
  * @Package com.xauv.dubbo
  * @Desc
  */
-public class UserServiceImpl implements UserService {
+public interface UserService {
 
-    @Override
-    public String hello() {
-        return "hello dubbo";
-    }
+    String hello();
 }

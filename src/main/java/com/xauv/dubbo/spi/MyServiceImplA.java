@@ -1,4 +1,4 @@
-package com.xauv.dubbo.combinespring;
+package com.xauv.dubbo.spi;
 
 /*
        /\   /\             /\.__                      
@@ -9,13 +9,17 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
       \/     \/                                    \/
 */
 
+import org.apache.dubbo.common.extension.SPI;
+
 /**
- * @Date 2021/06/26 14:21
+ * @Date 2021/07/03 20:31
  * @Author ling yue
- * @Package com.xauv.dubbo
+ * @Package com.xauv.dubbo.spi
  * @Desc
  */
-public interface UserService {
-
-    String hello();
+public class MyServiceImplA implements MyService{
+    @Override
+    public String say() {
+        return "MyServiceImplA";
+    }
 }
