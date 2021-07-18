@@ -1,2 +1,0 @@
-serviceA=com.xauv.dubbo.spi.MyServiceImplA
-serviceB=com.xauv.dubbo.spi.MyServiceImplB

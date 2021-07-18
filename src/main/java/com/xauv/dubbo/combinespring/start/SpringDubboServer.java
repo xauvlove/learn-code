@@ -26,6 +26,6 @@ public class SpringDubboServer {
         context.setConfigLocation("provider.xml");
         context.refresh();
         System.out.println("服务器启动成功");
-        System.in.read();
+        int read = System.in.read();
     }
 }
