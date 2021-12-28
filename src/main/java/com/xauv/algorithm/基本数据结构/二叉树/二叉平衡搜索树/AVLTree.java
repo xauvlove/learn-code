@@ -103,7 +103,7 @@ public class AVLTree<E extends Comparable<E>> extends BalanceBinarySearchTree<E>
                 rotateRight(parent);
                 rotateLeft(grand);
             }
-            // RR
+            // RR .
             else {
                 rotateLeft(grand);
             }
