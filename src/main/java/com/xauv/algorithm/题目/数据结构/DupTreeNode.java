@@ -1,4 +1,4 @@
-package com.xauv.dubbo.spi;
+package com.xauv.algorithm.题目.数据结构;
 
 /*
        /\   /\             /\.__                      
@@ -9,18 +9,24 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
       \/     \/                                    \/
 */
 
-import org.apache.dubbo.common.extension.SPI;
+import lombok.Data;
 
 /**
- * @Date 2021/07/03 20:31
+ * @Date 2021/11/12 18:28
  * @Author ling yue
- * @Package com.xauv.dubbo.spi
+ * @Package com.xauv.algorithm.datastructure
  * @Desc
  */
-public class MyServiceImplA implements MyService{
-    @Override
-    public String say() {
-        return "MyServiceImplA";
+@Data
+public class DupTreeNode extends TreeNode {
+
+    private DupTreeNode parent;
+
+    private DupTreeNode left;
+
+    private DupTreeNode right;
+
+    public DupTreeNode(int code) {
+        super(code);
     }
 }
-

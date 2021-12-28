@@ -7,6 +7,8 @@ import java.util.concurrent.TimeUnit;
 
 public class SynchronizedTest {
 
+    public static final Object lock = new Object();
+
     public  synchronized static void accessResource1(){
         try {
             TimeUnit.SECONDS.sleep(2);
@@ -41,6 +43,14 @@ public class SynchronizedTest {
         SynchronizedTest synchronizedTest2 = new SynchronizedTest();
         new Thread(synchronizedTest1::accessResource3).start();
         new Thread(synchronizedTest2::accessResource3).start();*/
-        PipedInputStream i = new PipedInputStream();
+        System.out.println("aaa" + ClassLayout.parseInstance(lock).toPrintable());
+
+        Thread.sleep(1000);
+        new Thread(() -> {
+            synchronized (lock) {
+                System.out.println("bbb" + ClassLayout.parseInstance(lock).toPrintable());
+
+            }
+        }).start();
     }
 }

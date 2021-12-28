@@ -9,6 +9,8 @@ package com.xauv.concurrent.blockingqueue;
  * \/     \/                                    \/
  */
 
+import java.util.concurrent.ArrayBlockingQueue;
+
 /**
  * @Date 2021/04/11 21:05
  * @Author ling yue

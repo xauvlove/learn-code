@@ -1,5 +1,4 @@
-package com.xauv.dubbo.spi;
-
+package com.xauv.algorithm.题目.数据结构;
 /*
        /\   /\             /\.__                      
 ___  __)/___)/  __ _____  _)/|  |   _______  __ ____  
@@ -9,18 +8,18 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
       \/     \/                                    \/
 */
 
-import org.apache.dubbo.common.extension.SPI;
+import java.util.Arrays;
 
 /**
- * @Date 2021/07/03 20:31
- * @Author ling yue
- * @Package com.xauv.dubbo.spi
+ * @Date 2021/12/24 21:36
+ * @Author Administrator
+ * @Package com.xauv.algorithm.题目.数据结构
  * @Desc
  */
-public class MyServiceImplA implements MyService{
-    @Override
-    public String say() {
-        return "MyServiceImplA";
-    }
-}
+public class ArrayUtil {
 
+    public static void print(int[] sz) {
+        System.out.println(Arrays.toString(sz));
+    }
+
+}

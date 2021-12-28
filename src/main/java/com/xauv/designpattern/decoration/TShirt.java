@@ -1,4 +1,4 @@
-package com.xauv.dubbo.spi;
+package com.xauv.designpattern.decoration;
 
 /*
        /\   /\             /\.__                      
@@ -9,18 +9,22 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
       \/     \/                                    \/
 */
 
-import org.apache.dubbo.common.extension.SPI;
-
 /**
- * @Date 2021/07/03 20:31
+ * @Date 2021/11/06 17:50
  * @Author ling yue
- * @Package com.xauv.dubbo.spi
+ * @Package com.xauv.designpattern.decoration
  * @Desc
  */
-public class MyServiceImplA implements MyService{
+public class TShirt extends Clothes {
+
+    private Person person;
+
+    public TShirt(Person person) {
+        this.person = person;
+    }
+
     @Override
-    public String say() {
-        return "MyServiceImplA";
+    protected void decorate() {
+        person.getClothes().add("T-shirt");
     }
 }
-
