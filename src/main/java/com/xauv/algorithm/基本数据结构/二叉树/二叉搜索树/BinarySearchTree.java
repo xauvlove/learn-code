@@ -32,12 +32,12 @@ public class BinarySearchTree<E extends Comparable<E>> implements BinaryTreeInfo
     /**
      * 树 size
      */
-    private int size;
+    protected int size;
 
     /**
      * 根节点
      */
-    private Node<E> root;
+    protected Node<E> root;
 
     public Node<E> getRoot() {
         return root;

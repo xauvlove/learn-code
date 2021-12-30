@@ -10,6 +10,8 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
 
 import com.xauv.algorithm.基本数据结构.二叉树.utils.BinaryTrees;
 
+import java.util.Random;
+
 /**
  * @Date 2021/12/27 22:23
  * @Author Administrator
@@ -20,10 +22,16 @@ public class 二叉平衡搜索树 {
 
     public static void main(String[] args) {
         AVLTree<Integer> tree = new AVLTree<>();
-        int[] array = new int[]{5,3,8,7,9,10};
+        //int[] array = new int[]{5,3,8,7,9,10};
+        Random random = new Random();
+
+        int[] array = new int[10];
+
+
         for (int i : array) {
-            tree.add(i);
+            tree.add(random.nextInt(100));
         }
         BinaryTrees.println(tree);
+
     }
 }

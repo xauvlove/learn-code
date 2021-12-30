@@ -61,7 +61,7 @@ public class AVLTree<E extends Comparable<E>> extends BalanceBinarySearchTree<E>
             // 如果不平衡，则恢复平衡
             else {
                 // 如果第一个节点恢复平衡 则整棵树平衡
-                reBalance(node);
+                rotateBalance(node);
                 break;
             }
         }
@@ -111,54 +111,146 @@ public class AVLTree<E extends Comparable<E>> extends BalanceBinarySearchTree<E>
     }
 
     /**
-     * 左旋转
-     * @param node
+     * AVL 统一旋转操作
+     * @param grand
      */
-    private void rotateLeft(Node<E> node) {
+    private void rotateBalance(Node<E> grand) {
+        AVLNode<E> parent = ((AVLNode<E>)((AVLNode<E>) grand).tallerChild());
+        AVLNode<E> node = (AVLNode<E>) ((parent.tallerChild()));
 
-        Node<E> rightChild = node.right;
-        Node<E> childLeft = rightChild.left;
+        if (parent.isLeftChild()) {
+            if (node.isLeftChild()) {
+                rotate(grand, node.left, node, node.right, parent, parent.right, grand, grand.right);
+            } else {
+                rotate(grand, parent.left, parent, node.left, node, node.right, grand, grand.right);
+            }
+        } else {
+            if (node.isLeftChild()) {
+                rotate(grand, grand.left, grand, node.left, node, node.right, parent, parent.right);
+            } else {
+                rotate(grand, grand.left, grand, parent.left, parent, node.left, node, node.right);
+            }
+        }
+    }
 
-        // 断开链
-        node.right = null;
-        rightChild.parent = null;
-        rightChild.left = null;
-        childLeft.parent = null;
+    /**
+     * AVL 统一旋转操作
+     * r a b c d e f g 是按照旋转完成后，二叉搜索树的特性从左到右传入的
+     *
+     * 旋转操作完成后，树是类似于这样的
+     *
+     *                d
+     *        b                f
+     *    a       c       e          g
+     *
+     * @param r 子树根节点，一般都是 grand，首先失衡的那个节点
+     * @param a
+     * @param b
+     * @param c
+     * @param d
+     * @param e
+     * @param f
+     * @param g
+     */
+    private void rotate(Node<E> r,
+                        Node<E> a, Node<E> b, Node<E> c,
+                        Node<E> d,
+                        Node<E> e, Node<E> f, Node<E> g) {
+        d.parent = r.parent;
+        if (r.isLeftChild()) {
+           r.parent.left = d;
+       } else if (r.isRightChild()) {
+           r.parent.right = d;
+       } else {
+           root = d;
+       }
 
-        // 连接 & 维护父子关系
-        rightChild.parent = node.parent;
-        rightChild.left = node;
+       d.left = b;
+       b.parent = d;
+       d.right = f;
+       f.parent = d;
 
-        childLeft.parent = node;
+       b.left = a;
+       if (a != null) {
+           a.parent = b;
+       }
 
-        node.right = childLeft;
-        node.parent = rightChild;
+       b.right = c;
+       if (c != null) {
+           c.parent = b;
+       }
+       updateHeight(b);
+
+       f.left = e;
+       if (e != null) {
+           e.parent = f;
+       }
+
+       f.right = g;
+       if (g != null) {
+           g.parent = f;
+       }
+       updateHeight(f);
+
+       updateHeight(d);
+    }
+
+    /**
+     * 左旋转
+     * @param grand
+     */
+    private void rotateLeft(Node<E> grand) {
+
+        // 修改指向
+        Node<E> parent = grand.right;
+        Node<E> child = parent.left;
+        grand.right = child;
+        parent.left = grand;
+
+        // 更新 parent
+        parent.parent = grand.parent;
+        if (grand.isLeftChild()) {
+            grand.parent.left = parent;
+        } else if (grand.isRightChild()) {
+            grand.parent.right = parent;
+        } else {
+            // grand 已经是根节点 grand.parent = null
+            root = parent;
+        }
+        grand.parent = parent;
+        if (child != null) {
+            child.parent = grand;
+        }
+        updateHeight(grand);
+        updateHeight(parent);
     }
 
     /**
      * 右旋转
-     * @param node
+     * @param grand
      */
-    private void rotateRight(Node<E> node) {
-        // 获取必要数据 左孩子 和 左孩子的右孩子，一个比 node 小 一个比 node 大
-        Node<E> leftChild = node.left;
-        Node<E> childRight = leftChild.right;
+    private void rotateRight(Node<E> grand) {
+        Node<E> parent = grand.left;
+        Node<E> child = parent.right;
 
-        // 将左孩子的父节点置为空 断链
-        leftChild.parent = null;
-        // 将需要旋转的左节点置为空 断链
-        node.left = null;
-        // 将左孩子的右孩子的父节点置为空
-        childRight.parent = null;
+        grand.left = child;
+        parent.right = grand;
 
-        // 将左孩子的父节点置为父节点的父节点
-        leftChild.parent = node.parent;
-        // 将左孩子的右节点的父节点
-        node.left = childRight;
+        parent.parent = grand.parent;
+        if (grand.isLeftChild()) {
+            grand.parent.left = parent;
+        } else if (grand.isRightChild()) {
+            grand.parent.right = parent;
+        } else {
+            root = parent;
+        }
 
-        // 维护一下父子关系
-        node.parent = leftChild;
-        childRight.parent = node;
+        grand.parent = parent;
+        if (child != null) {
+            child.parent = grand;
+        }
+        updateHeight(grand);
+        updateHeight(parent);
     }
 
     /**
