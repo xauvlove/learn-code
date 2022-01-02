@@ -549,8 +549,6 @@ public class BinarySearchTree<E extends Comparable<E>> implements BinaryTreeInfo
         return true;
     }
 
-
-
     private void elementNotNullCheck(E element) {
         if (element == null) {
             throw new IllegalArgumentException("元素不能为空");
@@ -626,6 +624,32 @@ public class BinarySearchTree<E extends Comparable<E>> implements BinaryTreeInfo
 
         public boolean isRightChild() {
             return parent != null && parent.right == this;
+        }
+
+        /**
+         * 求兄弟节点
+         * @return
+         */
+        public Node<E> sibling() {
+            if (isLeftChild()) {
+                return parent.right;
+            }
+            if (isRightChild()) {
+                return parent.left;
+            }
+            return null;
+        }
+
+        /**
+         * 求叔父节点
+         * @return
+         */
+        public Node<E> uncle() {
+            if (parent == null) {
+                return null;
+            }
+            // 叔父节点就是父节点的兄弟节点
+            return parent.sibling();
         }
     }
 }

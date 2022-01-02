@@ -9,9 +9,6 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
 */
 
 import com.xauv.test.算法.二叉树.utils.BinaryTreeInfo;
-import com.xauv.test.算法.二叉树.实现.BinaryTree;
-import com.xauv.test.算法.二叉树.实现.Node;
-
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -49,6 +46,7 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> imp
         }
         if (root == null) {
             root = createNode(e);
+            afterAdd(root);
         } else {
             Node<E> node = root;
             Node<E> parent = node;
@@ -74,6 +72,7 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> imp
                 parent.value = cNode.value;
             }
             cNode.parent = parent;
+            afterAdd(cNode);
         }
         size++;
     }
@@ -102,11 +101,16 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> imp
         }
     }
 
+    protected void afterAdd(Node<E> node) {
+
+    }
+
     private void delete0(Node<E> node) {
 
         if (node == root) {
             root = null;
             size--;
+            afterRemove(node);
             return;
         }
 
@@ -133,7 +137,12 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> imp
         } else {
             parent.right = null;
         }
+        afterRemove(node);
         size--;
+    }
+
+    protected void afterRemove(Node<E> node) {
+
     }
 
     private void delete1(Node<E> node) {
@@ -154,6 +163,7 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> imp
             }
             child.parent = parent;
         }
+        afterRemove(node);
         size--;
     }
 
@@ -233,7 +243,7 @@ public class BinarySearchTree<E extends Comparable<E>> extends BinaryTree<E> imp
         return true;
     }
 
-    private Node<E> createNode(E e) {
+    protected Node<E> createNode(E e) {
         return new Node<>(e);
     }
 

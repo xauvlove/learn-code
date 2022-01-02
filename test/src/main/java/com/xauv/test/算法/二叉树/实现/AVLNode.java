@@ -24,4 +24,24 @@ public class AVLNode<E> extends Node<E> {
     public AVLNode(E e) {
         super(e);
     }
+
+    public void updateHeight() {
+        int leftHeight = left != null ? ((AVLNode<E>) left).height : 0;
+        int rightHeight = right != null ? ((AVLNode<E>) right).height : 0;
+        height = Math.max(leftHeight, rightHeight) + 1;
+    }
+
+    public int balanceFactor() {
+        int leftHeight = left != null ? ((AVLNode<E>) left).height : 0;
+        int rightHeight = right != null ? ((AVLNode<E>) right).height : 0;
+        return leftHeight - rightHeight;
+    }
+
+    public boolean isBalance() {
+        return Math.abs(balanceFactor()) <= 1;
+    }
+
+    public AVLNode<E> getTallerChild() {
+        return balanceFactor() > 0 ? (AVLNode<E>) left : (AVLNode<E>) right;
+    }
 }

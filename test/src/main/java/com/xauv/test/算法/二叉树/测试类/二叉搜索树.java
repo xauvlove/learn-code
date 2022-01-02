@@ -9,6 +9,7 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
 */
 
 
+import com.xauv.test.算法.二叉树.实现.AVLTree;
 import com.xauv.test.算法.二叉树.实现.BinarySearchTree;
 import com.xauv.test.算法.二叉树.utils.BinaryTrees;
 import com.xauv.test.算法.二叉树.实现.Tree;
@@ -22,14 +23,23 @@ import com.xauv.test.算法.二叉树.实现.Tree;
 public class 二叉搜索树 {
 
     public static void main(String[] args) {
-        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
+        /*BinarySearchTree<Integer> tree = new BinarySearchTree<>();
         int[] array = new int[]{7, 4, 9, 2, 5, 8, 11, 3, 2, 1, 66, 77, 88, 22, 13};
 
         for (int i : array) {
             tree.add(i);
         }
         tree.inverse();
-        BinaryTrees.println(tree);
+        BinaryTrees.println(tree);*/
+
+        AVLTree<Integer> avlTree = new AVLTree<>();
+
+        int[] array = new int[]{7, 4, 9, 2, 5, 8, 11, 3, 2, 1, 66, 77,88,12,13};
+        for (int i : array) {
+            avlTree.add(i);
+        }
+        BinaryTrees.println(avlTree);
+
 
     }
 }

@@ -48,4 +48,18 @@ public class Node<E> {
     public boolean degree2() {
         return left != null && right != null;
     }
+
+    public boolean isLeftChild() {
+        if (parent == null) {
+            return false;
+        }
+        return parent.left == this;
+    }
+
+    public boolean isRightChild() {
+        if (parent == null) {
+            return false;
+        }
+        return parent.right == this;
+    }
 }

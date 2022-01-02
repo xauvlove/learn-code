@@ -38,6 +38,11 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
  *
  * 旋转时，【只需】从下往上找到第一个失衡节点进行旋转
  * 旋转后，父节点平衡，祖父节点也平衡 ······ 往上的所有节点都平衡
+ *
+ *
+ * 删除一个节点，失衡的情况
+ *  首先失衡的是父节点
+ *  父节点调整后，祖父节点可能会失衡 ······ 需要不断向上调整，让整棵树平衡
  */
 public class AVLTree<E extends Comparable<E>> extends BalanceBinarySearchTree<E> {
 
@@ -82,7 +87,6 @@ public class AVLTree<E extends Comparable<E>> extends BalanceBinarySearchTree<E>
             }
             // 如果不平衡，则恢复平衡
             else {
-                // 如果第一个节点恢复平衡 则整棵树平衡
                 rotateBalance(node);
             }
         }
