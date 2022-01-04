@@ -193,7 +193,8 @@ public class BinarySearchTree<E extends Comparable<E>> implements BinaryTreeInfo
             parent.right = null;
             size = size - 1;
         }
-        afterRemove(node);
+        // 删除叶子节点，没有节点取代 node 成为 parent 的子节点
+        afterRemove(node, null);
     }
 
     /**
@@ -202,6 +203,8 @@ public class BinarySearchTree<E extends Comparable<E>> implements BinaryTreeInfo
     private void delete1(Node<E> node) {
         Node<E> left = node.left;
         Node<E> right = node.right;
+        // replacement 是取代 node，成为 parent 的子节点的节点
+        Node<E> replacement = null;
         // 如果删除根节点
         if (node == root) {
             // 左孩子不为空
@@ -219,6 +222,7 @@ public class BinarySearchTree<E extends Comparable<E>> implements BinaryTreeInfo
         // 删除节点不是根节点
         else {
             Node<E> parent = node.parent;
+
             // 左孩子不为空
             if (node.isLeftChild()) {
                 if (left != null) {
@@ -226,11 +230,13 @@ public class BinarySearchTree<E extends Comparable<E>> implements BinaryTreeInfo
                     parent.left = left;
                     // 孙子节点的父亲指向祖父节点
                     left.parent = parent;
+                    replacement = left;
                 }
                 // 右孩子不为空
                 if (right != null) {
                     parent.left = right;
                     right.parent = parent;
+                    replacement = right;
                 }
             } else if (node.isRightChild()){
                 if (left != null) {
@@ -238,11 +244,13 @@ public class BinarySearchTree<E extends Comparable<E>> implements BinaryTreeInfo
                     parent.right = left;
                     // 孙子节点的父亲指向祖父节点
                     left.parent = parent;
+                    replacement = left;
                 }
                 // 右孩子不为空
                 if (right != null) {
                     parent.right = right;
                     right.parent = parent;
+                    replacement = right;
                 }
             } else {
                 throw new RuntimeException("该节点有父节点，但它既不是左孩子也不是右孩子，请检查上面操作是否有误");
@@ -250,7 +258,7 @@ public class BinarySearchTree<E extends Comparable<E>> implements BinaryTreeInfo
 
             size = size - 1;
         }
-        afterRemove(node);
+        afterRemove(node, replacement);
     }
 
     /**
@@ -279,7 +287,7 @@ public class BinarySearchTree<E extends Comparable<E>> implements BinaryTreeInfo
      * 删除节点之后做的事
      * @param node
      */
-    protected void afterRemove(Node<E> node) {
+    protected void afterRemove(Node<E> node, Node<E> replacement) {
 
     }
 

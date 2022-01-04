@@ -79,7 +79,7 @@ public class AVLTree<E extends Comparable<E>> extends BalanceBinarySearchTree<E>
      * @param node
      */
     @Override
-    protected void afterRemove(Node<E> node) {
+    protected void afterRemove(Node<E> node, Node<E> replacement) {
         while ((node = node.parent) != null) {
             // 如果是平衡的，则更新高度
             if (isBalanced(node)) {
@@ -133,6 +133,7 @@ public class AVLTree<E extends Comparable<E>> extends BalanceBinarySearchTree<E>
                 rotateLeft(grand);
             }
         }
+        afterRotate(grand, parent, node);
     }
 
     /**
@@ -158,124 +159,18 @@ public class AVLTree<E extends Comparable<E>> extends BalanceBinarySearchTree<E>
         }
     }
 
-    /**
-     * AVL 统一旋转操作
-     * r a b c d e f g 是按照旋转完成后，二叉搜索树的特性从左到右传入的
-     *
-     * 旋转操作完成后，树是类似于这样的
-     *
-     *                d
-     *        b                f
-     *    a       c       e          g
-     *
-     * @param r 子树根节点，一般都是 grand，首先失衡的那个节点
-     * @param a
-     * @param b
-     * @param c
-     * @param d
-     * @param e
-     * @param f
-     * @param g
-     */
-    private void rotate(Node<E> r,
-                        Node<E> a, Node<E> b, Node<E> c,
-                        Node<E> d,
-                        Node<E> e, Node<E> f, Node<E> g) {
-        d.parent = r.parent;
-        if (r.isLeftChild()) {
-           r.parent.left = d;
-       } else if (r.isRightChild()) {
-           r.parent.right = d;
-       } else {
-           root = d;
-       }
-
-       d.left = b;
-       b.parent = d;
-       d.right = f;
-       f.parent = d;
-
-       b.left = a;
-       if (a != null) {
-           a.parent = b;
-       }
-
-       b.right = c;
-       if (c != null) {
-           c.parent = b;
-       }
-       updateHeight(b);
-
-       f.left = e;
-       if (e != null) {
-           e.parent = f;
-       }
-
-       f.right = g;
-       if (g != null) {
-           g.parent = f;
-       }
-       updateHeight(f);
-
-       updateHeight(d);
-    }
-
-    /**
-     * 左旋转
-     * @param grand
-     */
-    private void rotateLeft(Node<E> grand) {
-
-        // 修改指向
-        Node<E> parent = grand.right;
-        Node<E> child = parent.left;
-        grand.right = child;
-        parent.left = grand;
-
-        // 更新 parent
-        parent.parent = grand.parent;
-        if (grand.isLeftChild()) {
-            grand.parent.left = parent;
-        } else if (grand.isRightChild()) {
-            grand.parent.right = parent;
-        } else {
-            // grand 已经是根节点 grand.parent = null
-            root = parent;
-        }
-        grand.parent = parent;
-        if (child != null) {
-            child.parent = grand;
-        }
+    @Override
+    protected void afterRotate(Node<E> grand, Node<E> parent, Node<E> child) {
         updateHeight(grand);
         updateHeight(parent);
     }
 
-    /**
-     * 右旋转
-     * @param grand
-     */
-    private void rotateRight(Node<E> grand) {
-        Node<E> parent = grand.left;
-        Node<E> child = parent.right;
-
-        grand.left = child;
-        parent.right = grand;
-
-        parent.parent = grand.parent;
-        if (grand.isLeftChild()) {
-            grand.parent.left = parent;
-        } else if (grand.isRightChild()) {
-            grand.parent.right = parent;
-        } else {
-            root = parent;
-        }
-
-        grand.parent = parent;
-        if (child != null) {
-            child.parent = grand;
-        }
-        updateHeight(grand);
-        updateHeight(parent);
+    @Override
+    protected void rotate(Node<E> r, Node<E> a, Node<E> b, Node<E> c, Node<E> d, Node<E> e, Node<E> f, Node<E> g) {
+        super.rotate(r, a, b, c, d, e, f, g);
+        updateHeight(b);
+        updateHeight(f);
+        updateHeight(d);
     }
 
     /**
