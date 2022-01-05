@@ -652,6 +652,11 @@ public class RBTree<E extends Comparable<E>> extends BalanceBinarySearchTree<E> 
         Node<E> parent = node.parent;
         // 优先考虑兄弟能否借节点，首先如果能借，兄弟必须是黑色
 
+        // 判断被删除的 node 是左还是右，不能通过 node.sibling()来获取，因为 parent.left 或者 parent.right 已经指向 null 了
+        boolean left = parent.left == null;
+        Node<E> sibling = left ? parent.right : parent.left;
+
+
 
     }
 
