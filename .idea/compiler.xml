@@ -9,7 +9,6 @@
         <outputRelativeToContentRoot value="true" />
         <module name="test" />
         <module name="main" />
-        <module name="learn-code" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8" />
