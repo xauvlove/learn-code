@@ -57,6 +57,8 @@ public class 二叉搜索树 {
         //tree.add(p14);
         //tree.add(p15);
         BinaryTrees.println(tree);
+
+
     }
 }
 
