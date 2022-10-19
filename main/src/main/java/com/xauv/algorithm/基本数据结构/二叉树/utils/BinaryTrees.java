@@ -16,6 +16,7 @@ public final class BinaryTrees {
 
 	public static void println(BinaryTreeInfo tree) {
 		println(tree, null);
+		System.out.println();
 	}
 
 	public static void print(BinaryTreeInfo tree, PrintStyle style) {

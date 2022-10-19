@@ -8,9 +8,10 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
       \/     \/                                    \/
 */
 
+import com.google.common.collect.Lists;
 import com.xauv.algorithm.基本数据结构.二叉堆.BinaryHeap;
 import com.xauv.algorithm.基本数据结构.二叉树.utils.BinaryTrees;
-
+import java.util.ArrayList;
 import java.util.Comparator;
 
 /**
@@ -38,13 +39,19 @@ public class 最大的K个整数 {
             }
         });
 
-        heap.add(83);
-        heap.add(35);
-        heap.add(71);
-        heap.add(66);
-        heap.add(43);
-        heap.add(67);
+        ArrayList<Integer> array = Lists.newArrayList(83, 35, 71, 66, 43, 67, 12, 36, 4, 73, 99, 1, 54);
+        for (int i = 0; i < 6; i++) {
+            heap.add(array.get(i));
+        }
+        BinaryTrees.println(heap);
 
-        BinaryTrees.println();
+        for (int i = 6; i < array.size(); i++) {
+            Integer num = array.get(i);
+            Integer top = heap.get();
+            if (top < num) {
+                heap.replace(num);
+            }
+        }
+        BinaryTrees.println(heap);
     }
 }
