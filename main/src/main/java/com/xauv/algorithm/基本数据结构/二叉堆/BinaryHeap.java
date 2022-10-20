@@ -132,14 +132,16 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
      *
      */
     @Override
-    public void remove() {
+    public E remove() {
         if (size == 0) {
-            return;
+            return null;
         }
+        E e = elements[0];
         elements[0] = elements[size-1];
         elements[size-1] = null;
         siftDown(0);
         size = size - 1;
+        return e;
     }
 
     /**
@@ -211,6 +213,10 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
             }
 
             E maxChild = rChild == null ? lChild : (compare(lChild, rChild) > 0 ? lChild : rChild);
+
+            if (maxChild == null) {
+                return;
+            }
 
             int maxChildIndex = rChild == null ? lChildIndex : (compare(lChild, rChild) > 0 ? lChildIndex : rChildIndex);
 

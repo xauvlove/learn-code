@@ -1,4 +1,4 @@
-package com.xauv.algorithm.测试;
+package com.xauv.algorithm.测试.树;
 
 import com.xauv.algorithm.基本数据结构.二叉树.utils.BinaryTreeInfo;
 import com.xauv.algorithm.基本数据结构.二叉树.utils.BinaryTrees;

@@ -15,7 +15,7 @@ public interface Heap<E> {
 
     void add(E e);
 
-    void remove();
+    E remove();
 
     void replace(E e);
 }

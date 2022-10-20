@@ -48,7 +48,7 @@ public abstract class AbstractHeap<E> implements Heap<E> {
     public abstract void add(E o);
 
     @Override
-    public abstract void remove();
+    public abstract E remove();
 
     @Override
     public abstract void replace(E o);
