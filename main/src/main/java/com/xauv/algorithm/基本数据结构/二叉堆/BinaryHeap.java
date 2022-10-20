@@ -36,11 +36,11 @@ import java.util.Comparator;
  * @Desc
  */
 @SuppressWarnings("JavadocBlankLines")
-public class BinaryMaxHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
+public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
 
     private E[] elements;
 
-    public BinaryMaxHeap(Comparator<E> comparator) {
+    public BinaryHeap(Comparator<E> comparator) {
         super(comparator);
         this.elements = (E[])(new Object[defaultCapacity]);
     }

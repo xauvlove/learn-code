@@ -20,7 +20,7 @@ public class 二叉堆 {
 
     public static void main(String[] args) {
 
-        BinaryMaxHeap<Integer> heap = new BinaryMaxHeap<>(null);
+        BinaryHeap<Integer> heap = new BinaryHeap<>(null);
         heap.add(68);
         heap.add(72);
         heap.add(43);
@@ -37,6 +37,7 @@ public class 二叉堆 {
 
         heap.replace(1);
         BinaryTrees.println(heap);
+
 
     }
 }
