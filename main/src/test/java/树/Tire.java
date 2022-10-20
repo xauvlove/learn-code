@@ -1,4 +1,4 @@
-package com.xauv.algorithm.测试.树;
+package 树;
 
 import com.xauv.algorithm.基本数据结构.映射.HashMap;
 import com.xauv.algorithm.基本数据结构.映射.Map;

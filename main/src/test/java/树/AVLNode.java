@@ -1,4 +1,4 @@
-package com.xauv.algorithm.测试.树;
+package 树;
 
 /**
  * @author: Bing Juan
