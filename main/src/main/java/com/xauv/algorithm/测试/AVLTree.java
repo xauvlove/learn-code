@@ -9,7 +9,7 @@ import java.util.Comparator;
  * @date: 2022/10/19 15 51
  * @desc:
  */
-public class AVLTree<E> extends BinarySearchTree<E>{
+public class AVLTree<E> extends BinarySearchTree<E> {
 
     public AVLTree(Comparator<E> comparator) {
         super(comparator);
@@ -24,6 +24,18 @@ public class AVLTree<E> extends BinarySearchTree<E>{
             } else {
                 rotate(avlNode);
             }
+        }
+    }
+
+    public void afterRemove(Node<E> node) {
+        AVLNode<E> avlNode = (AVLNode<E>) node;
+        while (avlNode != null) {
+            if (avlNode.isBalance()) {
+                avlNode.updateHeight();
+            } else {
+                rotate(avlNode);
+            }
+            avlNode = (AVLNode<E>) avlNode.parent;
         }
     }
 
@@ -59,7 +71,7 @@ public class AVLTree<E> extends BinarySearchTree<E>{
 
     public static void main(String[] args) {
 
-        int[] array = new int[]{89,19,69,93,91,90,92,99,100,11,101,102};
+        int[] array = new int[]{89,19,69,93,91,90,92,99,100,11,101,104};
 
         AVLTree<Integer> tree = new AVLTree<>(null);
         for (int i : array) {
@@ -68,6 +80,10 @@ public class AVLTree<E> extends BinarySearchTree<E>{
 
         BinaryTrees.print(tree);
 
+        tree.remove(99);
+        tree.remove(100);
+        tree.remove(104);
+        BinaryTrees.print(tree);
 
     }
 }

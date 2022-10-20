@@ -54,4 +54,12 @@ public class AVLNode<E> extends Node<E>{
         }
         return avlLeft.height > avlRight.height ? avlLeft : avlRight;
     }
+
+    public boolean isLeftChild() {
+        return parent != null && parent.left == this;
+    }
+
+    public boolean isRightChild() {
+        return parent != null && parent.right == this;
+    }
 }

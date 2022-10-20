@@ -78,6 +78,7 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
             delete2(eNode);
         }
         size--;
+        afterRemove(eNode);
     }
 
     private void delete0(Node<E> node) {
@@ -204,7 +205,11 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         }
 
         Node<E> gParent = grand.parent;
-        gParent.right = parent;
+        if (grand.isLeft()) {
+            gParent.left = parent;
+        } else {
+            gParent.right = parent;
+        }
         parent.parent = gParent;
         grand.right = parent.left;
         if (parent.left != null) {
@@ -229,7 +234,11 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         }
 
         Node<E> gParent = grand.parent;
-        gParent.left = parent;
+        if (grand.isLeft()) {
+            gParent.left = parent;
+        } else {
+            gParent.right = parent;
+        }
         parent.parent = gParent;
         grand.left = parent.right;
         if (parent.right != null) {
