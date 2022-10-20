@@ -301,6 +301,8 @@ public class BinarySearchTree<E extends Comparable<E>> implements BinaryTreeInfo
 
     /**
      * 查找前驱节点
+     *
+     * 前驱 要么是左子树最大的，要么是他的父系，这个父系的又孩子是它
      * @return
      */
     public E getPredecessor(E element) {
