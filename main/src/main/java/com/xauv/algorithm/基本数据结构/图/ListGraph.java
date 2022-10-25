@@ -169,7 +169,10 @@ public class ListGraph<V, E> extends AbstractGraph<V, E> {
 
     @Override
     public Set<EdgeInfo<V, E>> mst() {
-        return prim();
+        // prim 算法
+        //return prim();
+        // kruskal 算法
+        return kruskal();
     }
 
     /**
@@ -186,7 +189,7 @@ public class ListGraph<V, E> extends AbstractGraph<V, E> {
         // 随便选一个顶点，加入到最小生成树【元素集合】中
         Vertex<V, E> vertex = vertices.values().iterator().next();
         addedVertex.add(vertex);
-        // 将这个顶点的出边加入最小堆
+        // 将这个顶点的出边加入最小堆，prim 算法是挨个节点加入，因此现在只加入这个顶点的出边
         BinaryHeap<Edge<V, E>> heap = new BinaryHeap<>(vertex.outEdges, edgeComparator);
 
         while (!heap.isEmpty()) {
@@ -206,6 +209,9 @@ public class ListGraph<V, E> extends AbstractGraph<V, E> {
             // edge 是权值最小的边，把他的 to 拿出来，将他的边全部加入最小堆
             heap.addAll(edge.to.outEdges);
         }
+        if (edgeInfos.size() < vertices.size() - 1) {
+            return new HashSet<>();
+        }
         return edgeInfos;
     }
 
@@ -216,9 +222,15 @@ public class ListGraph<V, E> extends AbstractGraph<V, E> {
     private Set<EdgeInfo<V, E>> kruskal() {
 
         Set<EdgeInfo<V, E>> edgeInfos = new HashSet<>();
+        // kruskal 是在所有边里面挑最小的，因此加入所有的边到最小堆
         BinaryHeap<Edge<V, E>> heap = new BinaryHeap<>(edges, edgeComparator);
 
+        // 并查集
         GenericUnionFind<Vertex<V, E>> uf = new GenericUnionFind<>();
+        // 顶点单独形成集合
+        vertices.forEach((V v, Vertex<V, E> vertex) -> {
+            uf.makeSet(vertex);
+        });
         while (!heap.isEmpty()) {
             // 边足够，结束
             if (edgeInfos.size() >= vertices.size() - 1) {
@@ -226,11 +238,16 @@ public class ListGraph<V, E> extends AbstractGraph<V, E> {
             }
             Edge<V, E> edge = heap.remove();
             // 判断是否形成环，使用并查集
+            // 如果顶点属于相同集合，说明形成了环
             if (uf.same(edge.from, edge.to)) {
                 continue;
             }
+            // 到这里，顶点属于不同集合，现将他们归入同一集合
             uf.union(edge.from, edge.to);
             edgeInfos.add(edge.info());
+        }
+        if (edgeInfos.size() < vertices.size() - 1) {
+            return new HashSet<>();
         }
         return edgeInfos;
     }
