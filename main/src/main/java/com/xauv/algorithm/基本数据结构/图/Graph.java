@@ -9,6 +9,7 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
 */
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Date 2022/10/23 16:28
@@ -120,4 +121,47 @@ public interface Graph<V, E> {
      * @return
      */
     List<V> topologicalSort();
+
+    /**
+     * 求最小生成树
+     *
+     * set 集合是边
+     *
+     * 根据这些边就可知道最小生成树
+     *
+     * @see 生成树
+     *
+     * @return
+     */
+    Set<EdgeInfo<V, E>> mst();
+
+    class EdgeInfo<V, E> {
+        V from;
+
+        V to;
+
+        E weight;
+
+        public EdgeInfo(V from, V to, E weight) {
+            this.from = from;
+            this.to = to;
+            this.weight = weight;
+        }
+
+        @Override
+        public String toString() {
+            return "{" +
+                    "from=" + from +
+                    ", to=" + to +
+                    ", weight=" + weight +
+                    '}';
+        }
+    }
+
+    interface WeightManager<E> {
+
+        int compare(E w1, E w2);
+
+        E add(E w1, E w2);
+    }
 }

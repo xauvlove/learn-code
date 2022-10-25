@@ -9,6 +9,7 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
 */
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Date 2022/10/23 16:56
@@ -18,38 +19,43 @@ import java.util.List;
  */
 public class 图 {
 
+    static Graph.WeightManager<Double> weightManager = new Graph.WeightManager<Double>() {
+        @Override
+        public int compare(Double w1, Double w2) {
+            return w2.compareTo(w1);
+        }
+
+        @Override
+        public Double add(Double w1, Double w2) {
+            return w1 + w2;
+        }
+    };
 
     public static void main(String[] args) {
 
-        /*ListGraph<String, Integer> graph = new ListGraph<>();
-        graph.addEdge("v1", "v0", 9);
-        graph.addEdge("v1", "v2", 3);
-        graph.addEdge("v2", "v0", 2);
-        graph.addEdge("v2", "v3", 5);
-        graph.addEdge("v3", "v4", 1);
-        graph.addEdge("v0", "v4", 6);
-        //graph.print();
-
-
-        graph.bfs("v2");*/
-
-        ListGraph<String, Integer> graph = new ListGraph<>();
-        for (int i = 0; i < Data.TOPO.length; i++) {
-            Object[] objects = Data.TOPO[i];
+        ListGraph<String, Double> graph = new ListGraph<>(weightManager);
+        for (int i = 0; i < Data.MST_01.length; i++) {
+            Object[] objects = Data.MST_01[i];
             if (objects.length == 2) {
                 graph.addEdge(objects[0].toString(), objects[1].toString());
-                //graph.addEdge(objects[1].toString(), objects[0].toString());
+                graph.addEdge(objects[1].toString(), objects[0].toString());
             } else {
-                graph.addEdge(objects[0].toString(), objects[1].toString(), (int)objects[3]);
-                //graph.addEdge(objects[1].toString(), objects[0].toString(), (int)objects[3]);
+                graph.addEdge(objects[0].toString(), objects[1].toString(), (double) (int) objects[2]);
+                graph.addEdge(objects[1].toString(), objects[0].toString(), (double) (int) objects[2]);
             }
 
         }
         //graph.bfs("5");
         graph.dfs("C");
         graph._dfs("C");
+        graph.bfs("C");
 
         List<String> topologicalSort = graph.topologicalSort();
         System.out.println(topologicalSort);
+
+        Set<Graph.EdgeInfo<String, Double>> mst = graph.mst();
+        for (Graph.EdgeInfo<String, Double> stringIntegerEdgeInfo : mst) {
+            System.out.println(stringIntegerEdgeInfo);
+        }
     }
 }

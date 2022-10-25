@@ -8,8 +8,10 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
       \/     \/                                    \/
 */
 
+import com.xauv.algorithm.基本数据结构.二叉堆.BinaryHeap;
+import com.xauv.algorithm.基本数据结构.并查集.GenericUnionFind;
+
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @Date 2022/10/23 16:50
@@ -19,11 +21,21 @@ import java.util.stream.Collectors;
  *
  * 以邻接表结构实现图
  */
-public class ListGraph<V, E> implements Graph<V, E> {
+public class ListGraph<V, E> extends AbstractGraph<V, E> {
 
     private Map<V, Vertex<V, E>> vertices = new HashMap<>();
 
     private Set<Edge<V, E>> edges = new HashSet<>();
+
+    private Comparator<Edge<V, E>> edgeComparator = (o1, o2) -> weightManager.compare(o1.weight, o2.weight);
+
+    public ListGraph() {
+        super(null);
+    }
+
+    public ListGraph(WeightManager<E> weightManager) {
+        super(weightManager);
+    }
 
     @Override
     public int edgesSize() {
@@ -153,6 +165,74 @@ public class ListGraph<V, E> implements Graph<V, E> {
             }
         }
         return list;
+    }
+
+    @Override
+    public Set<EdgeInfo<V, E>> mst() {
+        return prim();
+    }
+
+    /**
+     * 使用 prim 算法求最小生成树
+     * @return
+     */
+    private Set<EdgeInfo<V, E>> prim() {
+        if (!vertices.values().iterator().hasNext()) {
+            return new HashSet<>();
+        }
+        Set<EdgeInfo<V, E>> edgeInfos = new HashSet<>();
+        // 最小生成树中，已经囊括的元素
+        Set<Vertex<V, E>> addedVertex = new HashSet<>();
+        // 随便选一个顶点，加入到最小生成树【元素集合】中
+        Vertex<V, E> vertex = vertices.values().iterator().next();
+        addedVertex.add(vertex);
+        // 将这个顶点的出边加入最小堆
+        BinaryHeap<Edge<V, E>> heap = new BinaryHeap<>(vertex.outEdges, edgeComparator);
+
+        while (!heap.isEmpty()) {
+            // 最小生成树节点集合已经包括了所有的图元素，表示最小生成树已找到
+            if (addedVertex.size() >= vertices.size()) {
+                break;
+            }
+            // 拿到权值最小的边
+            Edge<V, E> edge = heap.remove();
+            // 如果节点已经加入过最小生成树集合，就不要再进行下面操作了
+            if (addedVertex.contains(edge.to)) {
+                continue;
+            }
+            // 找到了权值最小的边，加入到结果集合
+            edgeInfos.add(edge.info());
+            addedVertex.add(edge.to);
+            // edge 是权值最小的边，把他的 to 拿出来，将他的边全部加入最小堆
+            heap.addAll(edge.to.outEdges);
+        }
+        return edgeInfos;
+    }
+
+    /**
+     * 使用 kruskal 算法求最小生成树
+     * @return
+     */
+    private Set<EdgeInfo<V, E>> kruskal() {
+
+        Set<EdgeInfo<V, E>> edgeInfos = new HashSet<>();
+        BinaryHeap<Edge<V, E>> heap = new BinaryHeap<>(edges, edgeComparator);
+
+        GenericUnionFind<Vertex<V, E>> uf = new GenericUnionFind<>();
+        while (!heap.isEmpty()) {
+            // 边足够，结束
+            if (edgeInfos.size() >= vertices.size() - 1) {
+                break;
+            }
+            Edge<V, E> edge = heap.remove();
+            // 判断是否形成环，使用并查集
+            if (uf.same(edge.from, edge.to)) {
+                continue;
+            }
+            uf.union(edge.from, edge.to);
+            edgeInfos.add(edge.info());
+        }
+        return edgeInfos;
     }
 
     public void bfs(V v) {
@@ -298,6 +378,10 @@ public class ListGraph<V, E> implements Graph<V, E> {
             this.from = from;
             this.to = to;
             this.weight = weight;
+        }
+
+        public EdgeInfo<V, E> info() {
+            return new EdgeInfo<>(from.value, to.value, weight);
         }
 
         @Override

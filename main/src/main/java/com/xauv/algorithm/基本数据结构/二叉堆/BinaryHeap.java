@@ -11,7 +11,9 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
 import com.xauv.algorithm.基本数据结构.二叉树.utils.BinaryTreeInfo;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.Iterator;
 
 /**
  *
@@ -45,6 +47,17 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
         this.elements = (E[])(new Object[defaultCapacity]);
     }
 
+    public BinaryHeap(Collection<E> collection, Comparator<E> comparator) {
+        super(comparator);
+        this.elements = (E[])(new Object[collection.size()]);
+        int i = 0;
+        for (E e : collection) {
+            this.elements[i++] = e;
+        }
+        size = collection.size();
+        heapIfy();
+    }
+
 
     @Override
     public void clear() {
@@ -76,6 +89,15 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
         elements[size] = e;
         siftUp(size);
         size++;
+    }
+
+    public void addAll(Collection<E> collection) {
+        if (collection == null || collection.isEmpty()) {
+            return;
+        }
+        for (E e : collection) {
+            add(e);
+        }
     }
 
     /**
@@ -348,7 +370,7 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
     }
 
     private void ensureCapacity() {
-        E[] nElements = (E[])new Object[size + size >> 1];
+        E[] nElements = (E[])new Object[size + size << 1];
         System.arraycopy(elements, 0, nElements, 0, elements.length);
         elements = nElements;
     }
