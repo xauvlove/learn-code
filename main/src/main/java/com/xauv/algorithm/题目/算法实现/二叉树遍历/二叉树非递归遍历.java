@@ -129,11 +129,11 @@ public class 二叉树非递归遍历 {
                 System.out.println(pop.getCode());
                 prev = pop;
             } else {
-                if (left != null) {
-                    stack.push(left);
-                }
                 if (right != null) {
                     stack.push(right);
+                }
+                if (left != null) {
+                    stack.push(left);
                 }
             }
         }
