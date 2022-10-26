@@ -30,6 +30,40 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
  * 链表，二叉树都是这种问题
  * 链表中包含小链表
  * 二叉树包含小二叉树
+ *
+ * 尾递归优化
+ *
  */
 public class 递归 {
+
+    /**
+     * 像这样的 尾递归
+     * jvm 会将它优化成 while 循环的方式，不再重复创建栈帧 消耗栈空间
+     * @param n
+     */
+    public static void test(int n) {
+        if (n <= 0) {
+            return;
+        }
+        System.out.println(n);
+        test(n-1);
+    }
+
+    /**
+     * jvm 会将上面的优化成下面的 while 形式
+     * @param n
+     */
+    public static void testOptimize(int n) {
+        if (n <= 0) {
+            return;
+        }
+        while (n >= 0) {
+            System.out.println(n);
+            n--;
+        }
+    }
+
+    public static void main(String[] args) {
+        test(33333);
+    }
 }
