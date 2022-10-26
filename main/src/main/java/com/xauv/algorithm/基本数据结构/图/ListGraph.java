@@ -23,11 +23,11 @@ import java.util.*;
  */
 public class ListGraph<V, E> extends AbstractGraph<V, E> {
 
-    private Map<V, Vertex<V, E>> vertices = new HashMap<>();
+    private final Map<V, Vertex<V, E>> vertices = new HashMap<>();
 
-    private Set<Edge<V, E>> edges = new HashSet<>();
+    private final Set<Edge<V, E>> edges = new HashSet<>();
 
-    private Comparator<Edge<V, E>> edgeComparator = (o1, o2) -> weightManager.compare(o1.weight, o2.weight);
+    private final Comparator<Edge<V, E>> edgeComparator = (o1, o2) -> weightManager.compare(o1.weight, o2.weight);
 
     public ListGraph() {
         super(null);
@@ -172,8 +172,67 @@ public class ListGraph<V, E> extends AbstractGraph<V, E> {
         // prim 算法
         //return prim();
         // kruskal 算法
-        return kruskal();
+        //return kruskal();
+        return new Random().nextBoolean() ? prim() : kruskal();
     }
+
+    @Override
+    public Map<V, E> shortPath(V begin) {
+        Vertex<V, E> vertex = vertices.get(begin);
+        if (vertex == null) {
+            return new HashMap<>();
+        }
+
+        // 已经确定了最小路径 的元素集合
+        Map<V, E> selectedPaths = new HashMap<>();
+        // 还未确定最小路径 的元素集合
+        HashMap<Vertex<V, E>, E> paths = new HashMap<>();
+        paths.put(vertex, null);
+        while (true) {
+            // 获取还未确定最小路径元素集合中，下一个立即要进行松弛操作的元素
+            Map.Entry<Vertex<V, E>, E> minPathVertexEntry = paths.entrySet().stream().min(
+                    (o1, o2) -> weightManager.compare(o1.getValue(), o2.getValue())).orElse(null);
+            if (minPathVertexEntry == null) {
+                break;
+            }
+            // 已经确定了最短路径的顶点
+            Vertex<V, E> minPathVertex = minPathVertexEntry.getKey();
+            // minPathWeightSum 是从初始点到该顶点的最短路径
+            E minPathWeightSum = minPathVertexEntry.getValue();
+            // 将已经确定最短路径的顶点 加入到结果集合中
+            selectedPaths.put(minPathVertex.value, minPathWeightSum);
+            // 将这个顶点从 未确定最短路径集合 中删除
+            paths.remove(minPathVertexEntry.getKey());
+            // 对 该顶点 进行松弛操作，更新 to 顶点的最短距离
+            relax(minPathVertexEntry, paths);
+        }
+        return selectedPaths;
+    }
+
+    private void relax(Map.Entry<Vertex<V, E>, E> entry, HashMap<Vertex<V, E>, E> paths) {
+        Vertex<V, E> minPathVertex = entry.getKey();
+        // 从起点到该顶点的当前最小路径
+        E minPathWeightSum = entry.getValue();
+        // 对 该顶点 进行松弛操作，更新 to 顶点的最短距离
+        for (Edge<V, E> outEdge : minPathVertex.outEdges) {
+            Vertex<V, E> to = outEdge.to;
+            // 如果之前已经有路径，则进行比较更新
+            if (paths.containsKey(to)) {
+                E oldPathWeight = paths.get(to);
+                E newPathWeight = weightManager.add(minPathWeightSum, outEdge.weight);
+                // 如果新路径权值更小，则更新
+                if (weightManager.compare(newPathWeight, oldPathWeight) < 0) {
+                    paths.put(to, newPathWeight);
+                }
+            } else {
+                // 如果之前没有路径，则加入
+                E newPathWeight = weightManager.add(minPathWeightSum, outEdge.weight);
+                paths.put(to, newPathWeight);
+            }
+        }
+    }
+
+
 
     /**
      * 使用 prim 算法求最小生成树
@@ -190,7 +249,7 @@ public class ListGraph<V, E> extends AbstractGraph<V, E> {
         Vertex<V, E> vertex = vertices.values().iterator().next();
         addedVertex.add(vertex);
         // 将这个顶点的出边加入最小堆，prim 算法是挨个节点加入，因此现在只加入这个顶点的出边
-        BinaryHeap<Edge<V, E>> heap = new BinaryHeap<>(vertex.outEdges, edgeComparator);
+        BinaryHeap<Edge<V, E>> heap = new BinaryHeap<>(vertex.outEdges, edgeComparator, false);
 
         while (!heap.isEmpty()) {
             // 最小生成树节点集合已经包括了所有的图元素，表示最小生成树已找到
@@ -223,7 +282,7 @@ public class ListGraph<V, E> extends AbstractGraph<V, E> {
 
         Set<EdgeInfo<V, E>> edgeInfos = new HashSet<>();
         // kruskal 是在所有边里面挑最小的，因此加入所有的边到最小堆
-        BinaryHeap<Edge<V, E>> heap = new BinaryHeap<>(edges, edgeComparator);
+        BinaryHeap<Edge<V, E>> heap = new BinaryHeap<>(edges, edgeComparator, false);
 
         // 并查集
         GenericUnionFind<Vertex<V, E>> uf = new GenericUnionFind<>();

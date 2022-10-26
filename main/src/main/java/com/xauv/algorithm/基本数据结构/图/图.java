@@ -9,6 +9,7 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
 */
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -22,11 +23,20 @@ public class 图 {
     static Graph.WeightManager<Double> weightManager = new Graph.WeightManager<Double>() {
         @Override
         public int compare(Double w1, Double w2) {
-            return w2.compareTo(w1);
+            if (w1 == null) {
+                return -1;
+            }
+            return w1.compareTo(w2);
         }
 
         @Override
         public Double add(Double w1, Double w2) {
+            if (w1 == null) {
+                w1 = 0d;
+            }
+            if (w2 == null) {
+                w2 = 0d;
+            }
             return w1 + w2;
         }
     };
@@ -35,8 +45,8 @@ public class 图 {
 
         // ---------------初始化--------------
         ListGraph<String, Double> graph = new ListGraph<>(weightManager);
-        for (int i = 0; i < Data.MST_02.length; i++) {
-            Object[] objects = Data.MST_02[i];
+        for (int i = 0; i < Data.WEIGHT3.length; i++) {
+            Object[] objects = Data.WEIGHT3[i];
             if (objects.length == 2) {
                 graph.addEdge(objects[0].toString(), objects[1].toString());
                 //graph.addEdge(objects[1].toString(), objects[0].toString());
@@ -68,5 +78,9 @@ public class 图 {
             }
         }
 
+        // ---------------最短路经--------------
+
+        Map<String, Double> paths = graph.shortPath("广州");
+        System.out.println(paths);
     }
 }

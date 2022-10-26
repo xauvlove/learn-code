@@ -42,6 +42,8 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
 
     private E[] elements;
 
+    private boolean bigTopHeap = true;
+
     public BinaryHeap(Comparator<E> comparator) {
         super(comparator);
         this.elements = (E[])(new Object[defaultCapacity]);
@@ -49,6 +51,18 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
 
     public BinaryHeap(Collection<E> collection, Comparator<E> comparator) {
         super(comparator);
+        this.elements = (E[])(new Object[collection.size()]);
+        int i = 0;
+        for (E e : collection) {
+            this.elements[i++] = e;
+        }
+        size = collection.size();
+        heapIfy();
+    }
+
+    public BinaryHeap(Collection<E> collection, Comparator<E> comparator, boolean bigTopHeap) {
+        super(comparator);
+        this.bigTopHeap = bigTopHeap;
         this.elements = (E[])(new Object[collection.size()]);
         int i = 0;
         for (E e : collection) {
@@ -401,6 +415,10 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
     }
 
     private int compare(E e1, E e2) {
-        return comparator != null ? comparator.compare(e1, e2) : ((Comparable<E>)e1).compareTo(e2);
+        if (bigTopHeap) {
+            return comparator != null ? comparator.compare(e1, e2) : ((Comparable<E>)e1).compareTo(e2);
+        } else {
+            return comparator != null ? comparator.compare(e2, e1) : ((Comparable<E>)e2).compareTo(e1);
+        }
     }
 }

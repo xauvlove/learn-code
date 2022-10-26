@@ -9,6 +9,7 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
 */
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -129,11 +130,21 @@ public interface Graph<V, E> {
      *
      * 根据这些边就可知道最小生成树
      *
-     * @see 生成树
+     * @see 最小生成树
      *
      * @return
      */
     Set<EdgeInfo<V, E>> mst();
+
+    /**
+     * 求最短路径
+     *
+     * 求 begin 到每个顶点的最短路径值
+     *
+     *
+     * @param begin
+     */
+    Map<V, E> shortPath(V begin);
 
     class EdgeInfo<V, E> {
         V from;
