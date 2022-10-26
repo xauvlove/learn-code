@@ -281,6 +281,69 @@ public class ListGraph<V, E> extends AbstractGraph<V, E> {
         return selectedPaths;
     }
 
+    @Override
+    public Map<V, Map<V, PathInfo<V, E>>> calShortPathByFloyd() {
+        Map<V, Map<V, PathInfo<V, E>>> paths = new HashMap<>();
+        // paths 初始化，将所有边放到 paths 中
+        for (Edge<V, E> edge : edges) {
+            Map<V, PathInfo<V, E>> edgePath = paths.get(edge.from.value);
+            if (edgePath == null || edgePath.isEmpty()) {
+                edgePath = new HashMap<>();
+                paths.put(edge.from.value, edgePath);
+            }
+            PathInfo<V, E> pathInfo = new PathInfo<>();
+            pathInfo.totalWeight = edge.weight;
+            pathInfo.edgeInfos.add(edge.info());
+            edgePath.put(edge.to.value, pathInfo);
+        }
+
+        vertices.forEach((V v2, Vertex<V, E> vertex2) -> {
+            vertices.forEach((V v1, Vertex<V, E> vertex1) -> {
+                vertices.forEach((V v3, Vertex<V, E> vertex3) -> {
+                    // 相同点到点不需要执行 v1 == v2 场景
+                    if (Objects.equals(v1, v2) || Objects.equals(v2, v3) || Objects.equals(v1, v3)) {
+                        return;
+                    }
+                    // v1->v2 最短路径
+                    PathInfo<V, E> path12 = getPathInfo(v1, v2, paths);
+                    if (path12 == null) {
+                        return;
+                    }
+                    // v2 -> v3 最短路径
+                    PathInfo<V, E> path23 = getPathInfo(v2, v3, paths);
+                    if (path23 == null) {
+                        return;
+                    }
+                    // v1 -> v3 最短路径
+                    PathInfo<V, E> path13 = getPathInfo(v1, v3, paths);
+
+                    E weight = weightManager.add(path12.totalWeight, path23.totalWeight);
+
+                    if (path13 != null && weightManager.compare(weight, path13.totalWeight) >= 0) {
+                        return;
+                    }
+                    if (path13 == null) {
+                        path13 = new PathInfo<>();
+                        paths.get(v1).put(v3, path13);
+                    }
+                    path13.edgeInfos.clear();
+                    path13.totalWeight = weight;
+                    path13.edgeInfos.addAll(path12.edgeInfos);
+                    path13.edgeInfos.addAll(path23.edgeInfos);
+                });
+            });
+        });
+        return paths;
+    }
+
+    private PathInfo<V, E> getPathInfo(V from, V to, Map<V, Map<V, PathInfo<V, E>>> paths) {
+        Map<V, PathInfo<V, E>> map = paths.get(from);
+        if (map == null || map.isEmpty()) {
+            return null;
+        }
+        return map.get(to);
+    }
+
     private boolean relax(Edge<V, E> edge, PathInfo<V, E> minPathInfo, Map<V, PathInfo<V, E>> paths) {
         Vertex<V, E> to = edge.to;
         E newPathWeight = weightManager.add(minPathInfo.totalWeight, edge.weight);

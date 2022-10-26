@@ -161,6 +161,15 @@ public interface Graph<V, E> {
      */
     Map<V, PathInfo<V, E>> calShortPathByBellmanFord(V begin);
 
+    /**
+     * @see 最短路径
+     * 多源最短路径算法
+     *
+     * 返回结果：从 V 开始，到所有节点的最短路径
+     * @return
+     */
+    Map<V, Map<V, PathInfo<V, E>>> calShortPathByFloyd();
+
     class EdgeInfo<V, E> {
         V from;
 

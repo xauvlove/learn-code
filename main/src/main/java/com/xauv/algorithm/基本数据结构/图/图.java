@@ -64,7 +64,7 @@ public class 图 {
         }
     };
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         // ---------------初始化--------------
         ListGraph<String, Double> graph = new ListGraph<>(weightManager);
@@ -116,6 +116,17 @@ public class 图 {
         pathInfos = graph.calShortPathByBellmanFord("A");
         for (Map.Entry<String, Graph.PathInfo<String, Double>> entry : pathInfos.entrySet()) {
             System.out.println(entry);
+        }
+
+        Thread.sleep(1000);
+
+        System.out.println("--------------- floyd 最短路经 --------------");
+        Map<String, Map<String, Graph.PathInfo<String, Double>>> map = graph.calShortPathByFloyd();
+        for (Map.Entry<String, Map<String, Graph.PathInfo<String, Double>>> entry : map.entrySet()) {
+            System.out.println(entry.getKey() + "------------------------");
+            for (Map.Entry<String, Graph.PathInfo<String, Double>> pathInfoEntry : entry.getValue().entrySet()) {
+                System.out.println("\t" + pathInfoEntry);
+            }
         }
     }
 }
