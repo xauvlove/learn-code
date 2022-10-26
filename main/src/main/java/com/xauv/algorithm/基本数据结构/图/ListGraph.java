@@ -186,7 +186,7 @@ public class ListGraph<V, E> extends AbstractGraph<V, E> {
         // 已经确定了最小路径 的元素集合
         Map<V, E> selectedPaths = new HashMap<>();
         // 还未确定最小路径 的元素集合
-        HashMap<Vertex<V, E>, E> paths = new HashMap<>();
+        Map<Vertex<V, E>, E> paths = new HashMap<>();
         paths.put(vertex, null);
         while (true) {
             // 获取还未确定最小路径元素集合中，下一个立即要进行松弛操作的元素
@@ -202,20 +202,103 @@ public class ListGraph<V, E> extends AbstractGraph<V, E> {
             // 将已经确定最短路径的顶点 加入到结果集合中
             selectedPaths.put(minPathVertex.value, minPathWeightSum);
             // 将这个顶点从 未确定最短路径集合 中删除
-            paths.remove(minPathVertexEntry.getKey());
+            paths.remove(minPathVertex);
             // 对 该顶点 进行松弛操作，更新 to 顶点的最短距离
-            relax(minPathVertexEntry, paths);
+            relax(minPathVertexEntry, paths, selectedPaths);
         }
         return selectedPaths;
     }
 
-    private void relax(Map.Entry<Vertex<V, E>, E> entry, HashMap<Vertex<V, E>, E> paths) {
+    @Override
+    public Map<V, PathInfo<V, E>> calShortPath(V begin) {
+        Vertex<V, E> vertex = vertices.get(begin);
+        if (vertex == null) {
+            return new HashMap<>();
+        }
+        // 已经确定了最小路径 的元素集合
+        Map<V, PathInfo<V, E>> selectedPaths = new HashMap<>();
+        // 还未确定最小路径 的元素集合
+        Map<Vertex<V, E>, PathInfo<V, E>> paths = new HashMap<>();
+
+        paths.put(vertex, new PathInfo<>());
+
+        while (true) {
+            // 获取还未确定最小路径元素集合中，下一个立即要进行松弛操作的元素
+            Map.Entry<Vertex<V, E>, PathInfo<V, E>> minPathVertexEntry = paths.entrySet().stream().min(
+                    (o1, o2) -> weightManager.compare(o1.getValue().totalWeight, o2.getValue().totalWeight)).orElse(null);
+            if (minPathVertexEntry == null) {
+                break;
+            }
+            Vertex<V, E> minPathVertex = minPathVertexEntry.getKey();
+            PathInfo<V, E> minPathVertexPathInfo = minPathVertexEntry.getValue();
+            selectedPaths.put(minPathVertex.value, minPathVertexPathInfo);
+            paths.remove(minPathVertex);
+
+            for (Edge<V, E> outEdge : minPathVertex.outEdges) {
+                /*Vertex<V, E> to = outEdge.to;
+                if (selectedPaths.containsKey(to.value)) {
+                    continue;
+                }
+                E newPathWeight = weightManager.add(minPathVertexPathInfo.totalWeight, outEdge.weight);
+                PathInfo<V, E> pathInfo = new PathInfo<>();
+                if (paths.containsKey(to)) {
+                    PathInfo<V, E> oldPathInfo = paths.get(to);
+                    E oldPathWeight = oldPathInfo.totalWeight;
+                    if (weightManager.compare(newPathWeight, oldPathWeight) < 0) {
+                        pathInfo.totalWeight = newPathWeight;
+                        pathInfo.edgeInfos.addAll(minPathVertexPathInfo.edgeInfos);
+                        pathInfo.edgeInfos.add(outEdge.info());
+                        paths.put(to, pathInfo);
+                    }
+                } else {
+                    pathInfo.edgeInfos.addAll(minPathVertexPathInfo.edgeInfos);
+                    pathInfo.edgeInfos.add(outEdge.info());
+                    pathInfo.totalWeight = newPathWeight;
+                    paths.put(to, pathInfo);
+                }*/
+                relax(outEdge, selectedPaths, paths);
+            }
+        }
+        return selectedPaths;
+    }
+    
+    private void relax(Edge<V, E> outEdge, Map<V, PathInfo<V, E>> selectedPaths, Map<Vertex<V, E>, PathInfo<V, E>> paths) {
+        Vertex<V, E> from = outEdge.from;
+        Vertex<V, E> to = outEdge.to;
+        if (selectedPaths.containsKey(to.value)) {
+            return;
+        }
+        PathInfo<V, E> minPathVertexPathInfo = selectedPaths.get(from.value);
+        E newPathWeight = weightManager.add(minPathVertexPathInfo.totalWeight, outEdge.weight);
+        PathInfo<V, E> pathInfo = new PathInfo<>();
+        if (paths.containsKey(to)) {
+            PathInfo<V, E> oldPathInfo = paths.get(to);
+            E oldPathWeight = oldPathInfo.totalWeight;
+            if (weightManager.compare(newPathWeight, oldPathWeight) < 0) {
+                pathInfo.totalWeight = newPathWeight;
+                pathInfo.edgeInfos.addAll(minPathVertexPathInfo.edgeInfos);
+                pathInfo.edgeInfos.add(outEdge.info());
+                paths.put(to, pathInfo);
+            }
+        } else {
+            pathInfo.edgeInfos.addAll(minPathVertexPathInfo.edgeInfos);
+            pathInfo.edgeInfos.add(outEdge.info());
+            pathInfo.totalWeight = newPathWeight;
+            paths.put(to, pathInfo);
+        }
+    }
+
+    private void relax(Map.Entry<Vertex<V, E>, E> entry, Map<Vertex<V, E>, E> paths, Map<V, E> selectedPaths) {
         Vertex<V, E> minPathVertex = entry.getKey();
         // 从起点到该顶点的当前最小路径
         E minPathWeightSum = entry.getValue();
         // 对 该顶点 进行松弛操作，更新 to 顶点的最短距离
         for (Edge<V, E> outEdge : minPathVertex.outEdges) {
             Vertex<V, E> to = outEdge.to;
+            // 如果之前已经有路径，则进行比较更新
+            if (selectedPaths.containsKey(to.value)) {
+                continue;
+            }
             // 如果之前已经有路径，则进行比较更新
             if (paths.containsKey(to)) {
                 E oldPathWeight = paths.get(to);
@@ -231,8 +314,6 @@ public class ListGraph<V, E> extends AbstractGraph<V, E> {
             }
         }
     }
-
-
 
     /**
      * 使用 prim 算法求最小生成树

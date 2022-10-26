@@ -8,6 +8,7 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
       \/     \/                                    \/
 */
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -146,6 +147,13 @@ public interface Graph<V, E> {
      */
     Map<V, E> shortPath(V begin);
 
+    /**
+     * @see 最短路径
+     * @param begin
+     * @return
+     */
+    Map<V, PathInfo<V, E>> calShortPath(V begin);
+
     class EdgeInfo<V, E> {
         V from;
 
@@ -165,6 +173,23 @@ public interface Graph<V, E> {
                     "from=" + from +
                     ", to=" + to +
                     ", weight=" + weight +
+                    '}';
+        }
+    }
+
+    class PathInfo<V, E> {
+
+        // 路径边信息
+        List<EdgeInfo<V, E>> edgeInfos = new LinkedList<>();
+
+        // 路径总权值
+        E totalWeight;
+
+        @Override
+        public String toString() {
+            return "PathInfo{" +
+                    "totalWeight=" + totalWeight +
+                    ", edgeInfos=" + edgeInfos +
                     '}';
         }
     }
