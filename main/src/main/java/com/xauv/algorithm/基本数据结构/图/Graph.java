@@ -152,7 +152,14 @@ public interface Graph<V, E> {
      * @param begin
      * @return
      */
-    Map<V, PathInfo<V, E>> calShortPath(V begin);
+    Map<V, PathInfo<V, E>> calShortPathByDijkstra(V begin);
+
+    /**
+     * @see 最短路径
+     * @param begin
+     * @return
+     */
+    Map<V, PathInfo<V, E>> calShortPathByBellmanFord(V begin);
 
     class EdgeInfo<V, E> {
         V from;
@@ -199,5 +206,7 @@ public interface Graph<V, E> {
         int compare(E w1, E w2);
 
         E add(E w1, E w2);
+
+        E zero();
     }
 }

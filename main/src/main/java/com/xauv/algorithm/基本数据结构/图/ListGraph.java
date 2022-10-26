@@ -210,7 +210,7 @@ public class ListGraph<V, E> extends AbstractGraph<V, E> {
     }
 
     @Override
-    public Map<V, PathInfo<V, E>> calShortPath(V begin) {
+    public Map<V, PathInfo<V, E>> calShortPathByDijkstra(V begin) {
         Vertex<V, E> vertex = vertices.get(begin);
         if (vertex == null) {
             return new HashMap<>();
@@ -218,74 +218,92 @@ public class ListGraph<V, E> extends AbstractGraph<V, E> {
         // 已经确定了最小路径 的元素集合
         Map<V, PathInfo<V, E>> selectedPaths = new HashMap<>();
         // 还未确定最小路径 的元素集合
-        Map<Vertex<V, E>, PathInfo<V, E>> paths = new HashMap<>();
-
-        paths.put(vertex, new PathInfo<>());
+        Map<V, PathInfo<V, E>> paths = new HashMap<>();
+        // 初始化 放入初始节点
+        paths.put(vertex.value, new PathInfo<>());
 
         while (true) {
             // 获取还未确定最小路径元素集合中，下一个立即要进行松弛操作的元素
-            Map.Entry<Vertex<V, E>, PathInfo<V, E>> minPathVertexEntry = paths.entrySet().stream().min(
+            Map.Entry<V, PathInfo<V, E>> minPathVertexEntry = paths.entrySet().stream().min(
                     (o1, o2) -> weightManager.compare(o1.getValue().totalWeight, o2.getValue().totalWeight)).orElse(null);
             if (minPathVertexEntry == null) {
                 break;
             }
-            Vertex<V, E> minPathVertex = minPathVertexEntry.getKey();
+            V vertexValue = minPathVertexEntry.getKey();
+            Vertex<V, E> minPathVertex = vertices.get(vertexValue);
             PathInfo<V, E> minPathVertexPathInfo = minPathVertexEntry.getValue();
             selectedPaths.put(minPathVertex.value, minPathVertexPathInfo);
-            paths.remove(minPathVertex);
-
+            paths.remove(minPathVertex.value);
+            // 对顶点所有出边进行松弛
             for (Edge<V, E> outEdge : minPathVertex.outEdges) {
-                /*Vertex<V, E> to = outEdge.to;
-                if (selectedPaths.containsKey(to.value)) {
+                // 如果已经确定最短路径，无需继续松弛，
+                if (selectedPaths.containsKey(outEdge.to.value)) {
                     continue;
                 }
-                E newPathWeight = weightManager.add(minPathVertexPathInfo.totalWeight, outEdge.weight);
-                PathInfo<V, E> pathInfo = new PathInfo<>();
-                if (paths.containsKey(to)) {
-                    PathInfo<V, E> oldPathInfo = paths.get(to);
-                    E oldPathWeight = oldPathInfo.totalWeight;
-                    if (weightManager.compare(newPathWeight, oldPathWeight) < 0) {
-                        pathInfo.totalWeight = newPathWeight;
-                        pathInfo.edgeInfos.addAll(minPathVertexPathInfo.edgeInfos);
-                        pathInfo.edgeInfos.add(outEdge.info());
-                        paths.put(to, pathInfo);
-                    }
-                } else {
-                    pathInfo.edgeInfos.addAll(minPathVertexPathInfo.edgeInfos);
-                    pathInfo.edgeInfos.add(outEdge.info());
-                    pathInfo.totalWeight = newPathWeight;
-                    paths.put(to, pathInfo);
-                }*/
-                relax(outEdge, selectedPaths, paths);
+                PathInfo<V, E> minPathInfo = selectedPaths.get(minPathVertex.value);
+                relax(outEdge, minPathInfo, paths);
             }
         }
         return selectedPaths;
     }
-    
-    private void relax(Edge<V, E> outEdge, Map<V, PathInfo<V, E>> selectedPaths, Map<Vertex<V, E>, PathInfo<V, E>> paths) {
-        Vertex<V, E> from = outEdge.from;
-        Vertex<V, E> to = outEdge.to;
-        if (selectedPaths.containsKey(to.value)) {
-            return;
+
+    @Override
+    public Map<V, PathInfo<V, E>> calShortPathByBellmanFord(V begin) {
+        Vertex<V, E> vertex = vertices.get(begin);
+        if (vertex == null) {
+            return new HashMap<>();
         }
-        PathInfo<V, E> minPathVertexPathInfo = selectedPaths.get(from.value);
-        E newPathWeight = weightManager.add(minPathVertexPathInfo.totalWeight, outEdge.weight);
+        // 已经确定了最小路径 的元素集合
+        Map<V, PathInfo<V, E>> selectedPaths = new HashMap<>();
+        selectedPaths.put(begin, new PathInfo<>());
+        // 进行 V-1 次松弛
+        for (int i = 0; i < (vertices.size() - 1); i++) {
+            // 遍历所有边
+            for (Edge<V, E> edge : edges) {
+                PathInfo<V, E> pathInfo = selectedPaths.get(edge.from.value);
+                if (pathInfo == null) {
+                    continue;
+                }
+                relax(edge, pathInfo, selectedPaths);
+            }
+        }
+        // 如果经过 V-1 次之后，还能找到最小路径，说明有负权环
+        for (Edge<V, E> edge : edges) {
+            PathInfo<V, E> pathInfo = selectedPaths.get(edge.from.value);
+            if (pathInfo == null) {
+                continue;
+            }
+            if (relax(edge, pathInfo, selectedPaths)) {
+                System.err.println("存在负权环");
+                return new HashMap<>();
+            }
+        }
+        return selectedPaths;
+    }
+
+    private boolean relax(Edge<V, E> edge, PathInfo<V, E> minPathInfo, Map<V, PathInfo<V, E>> paths) {
+        Vertex<V, E> to = edge.to;
+        E newPathWeight = weightManager.add(minPathInfo.totalWeight, edge.weight);
         PathInfo<V, E> pathInfo = new PathInfo<>();
-        if (paths.containsKey(to)) {
-            PathInfo<V, E> oldPathInfo = paths.get(to);
+        if (paths.containsKey(to.value)) {
+            PathInfo<V, E> oldPathInfo = paths.get(to.value);
             E oldPathWeight = oldPathInfo.totalWeight;
             if (weightManager.compare(newPathWeight, oldPathWeight) < 0) {
                 pathInfo.totalWeight = newPathWeight;
-                pathInfo.edgeInfos.addAll(minPathVertexPathInfo.edgeInfos);
-                pathInfo.edgeInfos.add(outEdge.info());
-                paths.put(to, pathInfo);
+                pathInfo.edgeInfos.addAll(minPathInfo.edgeInfos);
+                pathInfo.edgeInfos.add(edge.info());
+                paths.put(to.value, pathInfo);
+            } else {
+                // 松弛失败
+                return false;
             }
         } else {
-            pathInfo.edgeInfos.addAll(minPathVertexPathInfo.edgeInfos);
-            pathInfo.edgeInfos.add(outEdge.info());
+            pathInfo.edgeInfos.addAll(minPathInfo.edgeInfos);
+            pathInfo.edgeInfos.add(edge.info());
             pathInfo.totalWeight = newPathWeight;
-            paths.put(to, pathInfo);
+            paths.put(to.value, pathInfo);
         }
+        return true;
     }
 
     private void relax(Map.Entry<Vertex<V, E>, E> entry, Map<Vertex<V, E>, E> paths, Map<V, E> selectedPaths) {
