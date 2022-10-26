@@ -1,4 +1,4 @@
-package com.xauv.algorithm.算法;
+package com.xauv.algorithm.算法.查找;
 /*
        /\   /\             /\.__                      
 ___  __)/___)/  __ _____  _)/|  |   _______  __ ____  
@@ -13,6 +13,8 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
  * @Author Administrator
  * @Package com.xauv.algorithm.算法.排序
  * @Desc
+ *
+ * 对有序序列进行二分查找
  */
 public class 二分搜索 {
 
