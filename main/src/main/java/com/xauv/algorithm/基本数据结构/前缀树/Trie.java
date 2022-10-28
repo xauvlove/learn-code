@@ -1,5 +1,7 @@
 package com.xauv.algorithm.基本数据结构.前缀树;
 
+import java.util.Set;
+
 public interface Trie<V> {
 
 	int size();
@@ -17,4 +19,6 @@ public interface Trie<V> {
 	V get(String str);
 
 	boolean startWith(String prefix);
+
+	Set<V> prefixValues(String prefix);
 }
