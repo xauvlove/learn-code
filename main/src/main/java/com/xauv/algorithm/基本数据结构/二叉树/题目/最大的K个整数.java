@@ -30,6 +30,8 @@ import java.util.Comparator;
  */
 public class 最大的K个整数 {
 
+    private static int K = 6;
+
     public static void main(String[] args) {
 
         BinaryHeap<Integer> heap = new BinaryHeap<>(new Comparator<Integer>() {
@@ -40,12 +42,12 @@ public class 最大的K个整数 {
         });
 
         ArrayList<Integer> array = Lists.newArrayList(83, 35, 71, 66, 43, 67, 12, 36, 4, 73, 99, 1, 54);
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < K; i++) {
             heap.add(array.get(i));
         }
         BinaryTrees.println(heap);
 
-        for (int i = 6; i < array.size(); i++) {
+        for (int i = K; i < array.size(); i++) {
             Integer num = array.get(i);
             Integer top = heap.get();
             if (top < num) {
@@ -53,5 +55,9 @@ public class 最大的K个整数 {
             }
         }
         BinaryTrees.println(heap);
+
+        while (!heap.isEmpty()) {
+            System.out.print(heap.remove() + " ");
+        }
     }
 }
