@@ -3,6 +3,7 @@ package com.xauv.algorithm.基本数据结构.二叉树.题目;
 import com.xauv.algorithm.基本数据结构.二叉堆.BinaryHeap;
 import com.xauv.algorithm.基本数据结构.二叉堆.Heap;
 import com.xauv.algorithm.基本数据结构.二叉树.utils.BinaryTreeInfo;
+import com.xauv.algorithm.基本数据结构.二叉树.utils.BinaryTrees;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -65,12 +66,7 @@ public class 哈夫曼树 {
             }
         }
 
-        Heap<HeapNode> heap = new BinaryHeap<>(new Comparator<HeapNode>() {
-            @Override
-            public int compare(HeapNode o1, HeapNode o2) {
-                return o1.times - o2.times;
-            }
-        });
+        Heap<HeapNode> heap = new BinaryHeap<>(Comparator.comparingInt(o -> o.times));
         for (Map.Entry<Character, Integer> entry : map.entrySet()) {
             heap.add(new HeapNode(entry.getKey(), entry.getValue(), true));
         }
@@ -83,6 +79,7 @@ public class 哈夫曼树 {
         String code = "EEEEEDDDDCCCBBA";
         哈夫曼树 hufManCode = new 哈夫曼树();
         hufManCode.formTree(code);
+        BinaryTrees.println(rootNode);
 
     }
 

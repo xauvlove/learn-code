@@ -20,11 +20,11 @@ import lombok.Data;
 @Data
 public class TreeNode {
 
-    private Integer code;
+    public Integer code;
 
-    private TreeNode left;
+    public TreeNode left;
 
-    private TreeNode right;
+    public TreeNode right;
 
     public TreeNode() {
     }
