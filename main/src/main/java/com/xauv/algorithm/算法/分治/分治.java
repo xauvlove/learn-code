@@ -1,4 +1,4 @@
-package com.xauv.algorithm.算法.贪心;
+package com.xauv.algorithm.算法.分治;
 /*
        /\   /\             /\.__                      
 ___  __)/___)/  __ _____  _)/|  |   _______  __ ____  
