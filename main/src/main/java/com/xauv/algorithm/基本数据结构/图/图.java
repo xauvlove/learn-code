@@ -68,8 +68,8 @@ public class 图 {
 
         // ---------------初始化--------------
         ListGraph<String, Double> graph = new ListGraph<>(weightManager);
-        for (int i = 0; i < Data.NEGATIVE_WEIGHT1.length; i++) {
-            Object[] objects = Data.NEGATIVE_WEIGHT1[i];
+        for (int i = 0; i < Data.MST_02.length; i++) {
+            Object[] objects = Data.MST_02[i];
             if (objects.length == 2) {
                 graph.addEdge(objects[0].toString(), objects[1].toString());
                 //graph.addEdge(objects[1].toString(), objects[0].toString());
@@ -95,12 +95,15 @@ public class 图 {
         // ---------------最小生成树--------------
         System.out.println("---------------最小生成树--------------");
         Set<Graph.EdgeInfo<String, Double>> mst = graph.mst();
+        double weight = 0d;
         if (mst.isEmpty()) {
             System.err.println("没有最小生成树");
         } else {
             for (Graph.EdgeInfo<String, Double> stringIntegerEdgeInfo : mst) {
+                weight+=stringIntegerEdgeInfo.weight;
                 System.out.println(stringIntegerEdgeInfo);
             }
+            System.out.println("weight="+weight);
         }
 
         // ---------------最短路经--------------

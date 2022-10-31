@@ -172,8 +172,8 @@ public class ListGraph<V, E> extends AbstractGraph<V, E> {
         // prim 算法
         //return prim();
         // kruskal 算法
-        //return kruskal();
-        return new Random().nextBoolean() ? prim() : kruskal();
+        return prim();
+        //return new Random().nextBoolean() ? prim() : kruskal();
     }
 
     @Override
