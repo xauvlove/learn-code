@@ -1,0 +1,3 @@
+serviceA=com.xauv.dubbo.spi.MyServiceImplA
+serviceB=com.xauv.dubbo.spi.MyServiceImplB
+myServiceImplAdaptive=com.xauv.dubbo.spi.MyServiceImplAdaptive

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://code.alibabatech.com/schema/dubbo
+       https://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <dubbo:application name="spring-dubbo-server"/>
+
+    <!-- 对于Dubbo集群中的Provider角色，有IO线程池和业务处理线程池（默认200）两个线程池 -->
+    <!--配置业务线程固定 100 个，并且将所有线程派遣给业务线程，所有消息都派发到线程池，包括请求，响应，连接事件，断开事件，心跳等-->
+    <!--最多接受50个客户端连接-->
+    <dubbo:protocol name="dubbo" port="-1" dispatcher="all" threadpool="fixed" threads="30" accepts="50"/>
+
+    <!-- 将心跳线程分派给 IO，业务请求的消息全都派遣给业务线程 只有请求响应消息派发到线程池，其它连接断开事件，心跳等消息，直接在 IO 线程上执行，并且线程使用缓存策略 -->
+    <!--<dubbo:protocol name="dubbo" port="-1" dispatcher="message" threadpool="cached"/> -->
+    <!--类似于 jdk 的无界队列-->
+    <!--<dubbo:protocol name="dubbo" port="-1" dispatcher="message" threadpool="eager">
+        <dubbo:parameter key="corePoolSize" value="10"/>
+        <dubbo:parameter key="maxPoolSize" value="100"/>
+    </dubbo:protocol>-->
+    <!-- <dubbo:registry address="multicast://224.1.1.1:9333"></dubbo:registry>-->
+    <!-- 注册到 zookeeper 的格式如 [dubbo://192.168.31.110:20880/com.xauv.dubbo.combinespring.UserService?anyhost=true&application=spring-dubbo-server&bean.name=com.xauv.dubbo.combinespring.UserService&deprecated=false&dubbo=2.0.2& dynamic=true&generic=false&interface=com.xauv.dubbo.combinespring.UserService&methods=hello&pid=12004&release=2.7.4.1&side= provider&timestamp=1625318016016]-->
+    <dubbo:registry address="zookeeper://localhost:2181"/>
+
+    <!--对于每个方法：执行方法所占用线程数不超过10个，方法占用连接数量不超过 15 如果客户端配置了负载均衡，那么服务端的配置失效，-->
+    <!--connection 是为某个接口创建独立的连接通道，若未配置该参数，则共享一个连接通道。-->
+    <dubbo:service interface="com.xauv.dubbo.combinespring.service.UserService" ref="userService" executes="10" actives="15" loadbalance="random" connections="5">
+        <!--执行这个方法所占用线程数不超过10个-->
+        <!--<dubbo:method name="hello" executes="10"/>-->
+    </dubbo:service>
+    <bean id="userService" class="com.xauv.dubbo.combinespring.service.UserServiceImpl"/>
+</beans>
