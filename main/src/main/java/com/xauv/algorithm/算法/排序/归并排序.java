@@ -82,7 +82,7 @@ public class 归并排序 {
     }
 
     /**
-     * 将 [begin, mid) 和 [mid, end) 合并成一个有序序列
+     * ------ 将 [begin, mid) 和 [mid, end) 合并成一个有序序列 ------
      *
      * 其中， [begin, mid) 和 [mid, end) 都已经是有序序列了（元素只有一个也是有序序列）
      *

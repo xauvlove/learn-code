@@ -8,7 +8,8 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
       \/     \/                                    \/
 */
 
-import com.xauv.algorithm.基本数据结构.映射.HashMap;
+
+import java.util.*;
 
 /**
  * @Date 2022/10/19 21:57
@@ -58,7 +59,7 @@ public class TrieImpl<V> implements Trie<V> {
         Node<V> node = root;
         char[] chars = str.toCharArray();
         for (char c : chars) {
-            HashMap<Character, Node<V>> children = node.children;
+            Map<Character, Node<V>> children = node.children;
             Node<V> childNode = children.get(c);
             if (childNode == null) {
                 childNode = new Node<>();
@@ -92,7 +93,7 @@ public class TrieImpl<V> implements Trie<V> {
         if (node.children.isEmpty()) {
             Node<V> parent = null;
             while ((parent = node.parent) != null) {
-                HashMap<Character, Node<V>> children = parent.children;
+                Map<Character, Node<V>> children = parent.children;
                 children.remove(node.c);
                 if (!children.isEmpty()) {
                     break;
@@ -133,7 +134,7 @@ public class TrieImpl<V> implements Trie<V> {
         }
         char[] chars = prefix.toCharArray();
         for (char c : chars) {
-            HashMap<Character, Node<V>> children = node.children;
+            Map<Character, Node<V>> children = node.children;
             Node<V> child = children.get(c);
             if (child == null) {
                 return false;
@@ -141,6 +142,49 @@ public class TrieImpl<V> implements Trie<V> {
             node = child;
         }
         return true;
+    }
+
+    @Override
+    public Set<V> prefixValues(String prefix) {
+        if (root == null) {
+            return null;
+        }
+        Node<V> node = root;
+        if (prefix == null || prefix.length() == 0) {
+            return null;
+        }
+        char[] chars = prefix.toCharArray();
+        for (char c : chars) {
+            Map<Character, Node<V>> children = node.children;
+            Node<V> child = children.get(c);
+            if (child == null) {
+                return null;
+            }
+            node = child;
+        }
+
+        // 使用深度优先算法，求出从 node 开始，到叶子节点每一条路径，每一条路径结束，就得到几个单词【一条路径上可能包含多个单词】
+        Set<V> result = new HashSet<>();
+        Stack<Node<V>> stack = new Stack<>();
+        Set<Node<V>> visited = new HashSet<>();
+        stack.push(node);
+        visited.add(node);
+        while (!stack.isEmpty()) {
+            Node<V> pop = stack.pop();
+            if (pop.word) {
+                result.add(pop.value);
+            }
+            Map<Character, Node<V>> children = pop.children;
+            for (Map.Entry<Character, Node<V>> entry : children.entrySet()) {
+                Node<V> value = entry.getValue();
+                if (!visited.contains(value)) {
+                    stack.push(pop);
+                    stack.push(value);
+                    visited.add(value);
+                }
+            }
+        }
+        return result;
     }
 
     private Node<V> node(String str) {
@@ -153,7 +197,7 @@ public class TrieImpl<V> implements Trie<V> {
         }
         char[] chars = str.toCharArray();
         for (char c : chars) {
-            HashMap<Character, Node<V>> children = node.children;
+            Map<Character, Node<V>> children = node.children;
             node = children.get(c);
             if (node == null) {
                 return null;
@@ -165,7 +209,7 @@ public class TrieImpl<V> implements Trie<V> {
     private static class Node<V> {
 
         // 存储路径
-        HashMap<Character, Node<V>> children = new HashMap<>();
+        Map<Character, Node<V>> children = new HashMap<>();
 
         Node<V> parent;
 

@@ -8,6 +8,8 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
       \/     \/                                    \/
 */
 
+import java.util.Set;
+
 /**
  * @Date 2022/10/19 22:37
  * @Author Administrator
@@ -22,7 +24,7 @@ public class 前缀树 {
         trie.add("doggy", 2);
         trie.add("cat", 3);
         trie.add("cats", 4);
-        System.out.println(trie.get("doggy"));
+        /* System.out.println(trie.get("doggy"));
         System.out.println(trie.get("dog"));
         System.out.println(trie.get("cat"));
         System.out.println(trie.get("cats"));
@@ -31,7 +33,13 @@ public class 前缀树 {
 
         System.out.println(trie.remove("dog"));
         System.out.println(trie.get("dog"));
-        System.out.println(trie.get("doggy"));
+        System.out.println(trie.get("doggy"));*/
+
+        System.out.println("---");
+        Set<Integer> d = trie.prefixValues("d");
+        for (Integer integer : d) {
+            System.out.println(integer);
+        }
 
     }
 }

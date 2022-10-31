@@ -9,6 +9,7 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
 */
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -114,6 +115,8 @@ import java.util.List;
  */
 public class 八皇后优化 {
 
+    static int[] queues;
+
     // 标记着某一列是否有皇后了，标记着第 col 列是否有皇后了
     static boolean[] cols;
 
@@ -139,6 +142,7 @@ public class 八皇后优化 {
         if (n < 1) {
             return;
         }
+        queues = new int[n];
         cols = new boolean[n];
         leftTop = new boolean[(n << 1) - 1];
         rightTop = new boolean[leftTop.length];
@@ -181,6 +185,9 @@ public class 八皇后优化 {
             if (rightTop[rtIndex]) {
                 continue;
             }
+
+            queues[row] = col;
+
             cols[col] = true;
             leftTop[ltIndex] = true;
             rightTop[rtIndex] = true;
@@ -194,11 +201,21 @@ public class 八皇后优化 {
     }
 
     public static void show() {
-
+        for (int row = 0; row < cols.length; row++) {
+            for (int col = 0; col < cols.length; col++) {
+                if (queues[row] == col) {
+                    System.out.print("Q ");
+                } else {
+                    System.out.print("口 ");
+                }
+            }
+            System.out.println();
+        }
+        System.out.println("----------------------------------");
     }
 
     public static void main(String[] args) {
-        int n = 20;
+        int n = 8;
         placeNQueens(n);
         System.out.printf("%d皇后，共%d种摆法", n, ways);
     }
