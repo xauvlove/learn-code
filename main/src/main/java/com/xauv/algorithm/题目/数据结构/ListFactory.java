@@ -8,6 +8,8 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
       \/     \/                                    \/
 */
 
+import java.util.Random;
+
 /**
  * @Date 2021/12/24 20:59
  * @Author Administrator
@@ -15,6 +17,8 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
  * @Desc
  */
 public class ListFactory {
+
+    public static Random random = new Random();
 
     public static ListNode initList() {
         ListNode head = new ListNode(0);
@@ -37,5 +41,32 @@ public class ListFactory {
         n7.setNext(n8);
 
         return head;
+    }
+
+    public static ListNode initListBySize(int size) {
+        ListNode head = new ListNode(random.nextInt(10));
+        ListNode node = head;
+        for (int i = 1; i <= size; i++) {
+            ListNode n1 = new ListNode(random.nextInt(10));
+            node.next = n1;
+            node = n1;
+        }
+        return head;
+    }
+
+    public static void printList(ListNode head) {
+        if (head == null) {
+            return;
+        }
+        ListNode node = head;
+        while (node != null) {
+            if (node == head) {
+                System.out.print(node.getValue() + " ");
+            } else {
+                System.out.print("-> " + node.getValue() + " ");
+            }
+            node = node.getNext();
+        }
+        System.out.println("-> null");
     }
 }

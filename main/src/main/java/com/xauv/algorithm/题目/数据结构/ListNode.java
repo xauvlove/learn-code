@@ -21,14 +21,21 @@ import java.io.Serializable;
 @Data
 public class ListNode implements Serializable {
 
-    private Integer value;
+    public Integer value;
 
-    private ListNode next;
+    public ListNode next;
 
     public ListNode(int value) {
         this.value = value;
     }
 
     public ListNode() {
+    }
+
+    @Override
+    public String toString() {
+        return "ListNode{" +
+                "value=" + value +
+                '}';
     }
 }
