@@ -12,6 +12,7 @@ import com.xauv.algorithm.题目.数据结构.ListFactory;
 import com.xauv.algorithm.题目.数据结构.ListNode;
 
 import java.util.Objects;
+import java.util.Stack;
 
 /**
  * @Date 2022/11/12 20:06
@@ -97,6 +98,26 @@ public class 回文链表 {
     }
 
     /**
+     * 思路 2，使用栈
+     *
+     * step1.
+     * 仍然找出中间元素
+     *
+     * step2.
+     * 将中间元素之前的所有元素入栈
+     *
+     * step3.
+     * 中间元素之后的所有元素，和栈顶比较，如果不相等，则表示非回文，如果相等，弹栈继续比较
+     *
+     * @param head
+     * @return
+     */
+    public static boolean isPalindrome2(ListNode head) {
+
+        return true;
+    }
+
+    /**
      * 利用快慢指针
      *
      * 快指针一次走两步
@@ -114,16 +135,17 @@ public class 回文链表 {
         ListNode fast = head;
         ListNode slow = head;
         while (true) {
-            ListNode next = fast.next;
-            if (next == null) {
+            ListNode sn = slow.next;
+            ListNode fn = fast.next;
+            if (fn == null) {
                 break;
             }
-            ListNode nNext = next.next;
-            if (nNext == null) {
+            ListNode fnn = fast.next.next;
+            if (fnn == null) {
                 break;
             }
-            fast = nNext;
-            slow = next;
+            fast = fnn;
+            slow = sn;
         }
         return slow;
     }
@@ -152,18 +174,11 @@ public class 回文链表 {
         ListNode head = new ListNode(0);
         ListNode n1 = new ListNode(1);
         ListNode n2 = new ListNode(2);
-        ListNode n3 = new ListNode(3);
-        ListNode n4 = new ListNode(2);
-        ListNode n5 = new ListNode(1);
-        ListNode n6 = new ListNode(0);
-
+        ListNode n4 = new ListNode(3);
 
         head.setNext(n1);
         n1.setNext(n2);
-        n2.setNext(n3);
-        n3.setNext(n4);
-        n4.setNext(n5);
-        n5.setNext(n6);
+        n2.setNext(n4);
 
         ListFactory.printList(head);
         System.out.println(isPalindrome(head));
