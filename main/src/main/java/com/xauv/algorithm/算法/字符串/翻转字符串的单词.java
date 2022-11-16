@@ -20,9 +20,9 @@ import com.google.errorprone.annotations.Var;
  * 反转后：blue is sky the
  *
  *
- * 翻转后，去掉两端空格，去掉多余空格，去掉标点符号
+ * 翻转后，去掉两端空格，去掉多余空格
  *
- * 如：a good     example !
+ * 如：a good     example
  * 翻转后：example good a
  *
  *
@@ -46,6 +46,11 @@ public class 翻转字符串的单词 {
      * @return
      */
     public static String reversSentence(String sentence) {
+
+        if (sentence == null || sentence.equals("")) {
+            return "";
+        }
+
         char[] chars = sentence.toCharArray();
         // 消除多余空格
         int len = 0;
@@ -84,6 +89,10 @@ public class 翻转字符串的单词 {
             reverse(chars, idx, i);
             idx = i + 1;
         }
+        // 有效长度为 0
+        if (len <= 0) {
+            return "";
+        }
         return new String(chars, 0, len);
     }
 
@@ -106,7 +115,8 @@ public class 翻转字符串的单词 {
     }
 
     public static void main(String[] args) {
-        String sentence = "a good     example ";
+        //String sentence = "       ";
+        String sentence = "  a   good    example     ";
         System.out.println(reversSentence(sentence));
     }
 }
