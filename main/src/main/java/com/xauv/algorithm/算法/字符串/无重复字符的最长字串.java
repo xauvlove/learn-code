@@ -8,6 +8,7 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
       \/     \/                                    \/
 */
 
+
 /**
  * @Date 2022/11/16 22:50
  * @Author Administrator
@@ -42,11 +43,40 @@ public class 无重复字符的最长字串 {
      *
      *
      *
+     *
      * @param sequence
      * @return
      */
     public static String maxUniqueCharSubsequence(String sequence) {
+        char[] chars = sequence.toCharArray();
+        int[] res = new int[chars.length];
+        res[0] = 1;
+        int max = res[0];
+        String subsequence = String.valueOf(chars[0]);
+        // 当扫描到 i 的时候，遍历之前的元素
+        for (int i = 1; i < chars.length; i++) {
+            char c = chars[i];
+            int re = res[i - 1];
+            // li 是上一个字符，最长不重复字串的开始索引
+            int li = i - re;
+            res[i] = 1;
+            for (int j = li; j < i; j++) {
+                if (chars[j] == c) {
+                    res[i] = 1;
+                } else {
+                    res[i] = res[i] + 1;
+                }
+            }
+            if (max < res[i]) {
+                max = res[i];
+                subsequence = String.valueOf(chars, i-max+1, max);
+            }
+        }
+        return subsequence;
+    }
 
-        return "";
+    public static void main(String[] args) {
+        String s = "pwwkew";
+        System.out.println(maxUniqueCharSubsequence(s));
     }
 }
