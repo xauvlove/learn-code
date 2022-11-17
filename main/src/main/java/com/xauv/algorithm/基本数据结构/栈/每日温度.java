@@ -37,6 +37,7 @@ import java.util.Stack;
  * 温度：[73, 74, 75, 71, 69, 72, 76, 73]
  * 间隔：[ 1,  1,  4,  2,  1,  1,  0,  0]
  *
+ *
  * 也就是，找到右边第一个比它大的值
  *
  * 【使用单调栈】
@@ -44,6 +45,16 @@ import java.util.Stack;
  */
 public class 每日温度 {
 
+    /**
+     * 使用单调栈，栈单调递减
+     *
+     * 1.如果元素比栈顶元素大，则弹栈
+     *
+     * 2.如果元素比栈顶元素小，则入栈
+     *
+     * @param array
+     * @return
+     */
     public static int[] dailyTemperatures(int[] array) {
         if (array == null || array.length == 0) {
             return new int[]{};
@@ -64,10 +75,51 @@ public class 每日温度 {
         return res;
     }
 
+    /**
+     * 倒推法
+     *
+     * 定义结果数组：dp[]
+     *
+     * 每日温度：
+     * 73, 74, 75, 71, 69, 72, 76, 73
+     *
+     * 最后一天温度为 73°
+     * dp[7] = 0
+     * 然后往前推
+     *
+     *
+     * @param array
+     * @return
+     */
+    public static int[] dailyTemperatures2(int[] array) {
+        if (array == null || array.length == 0) {
+            return new int[]{};
+        }
+        int[] dp = new int[array.length];
+        dp[array.length-1] = 0;
+
+        for (int i = array.length - 2; i >= 0; i--) {
+            if (array[i] >= array[i+1]) {
+                for (int j = i+1; j < array.length; j++) {
+                    if (array[i] < array[j]) {
+                        dp[i] = j-i;
+                        break;
+                    }
+                }
+            } else {
+                dp[i] = 1;
+            }
+        }
+        return dp;
+    }
+
 
     public static void main(String[] args) {
-        int[] array = {73, 74, 75, 71, 69, 72, 76, 73};
-        int[] temperatures = dailyTemperatures(array);
-        System.out.println(Arrays.toString(temperatures));
+        //int[] array = {73, 74, 75, 71, 69, 72, 76, 73};
+        int[] array = {11, 53, 43, 23, 23, 23, 33};
+        int[] temperatures1 = dailyTemperatures(array);
+        System.out.println(Arrays.toString(temperatures1));
+        int[] temperatures2 = dailyTemperatures2(array);
+        System.out.println(Arrays.toString(temperatures2));
     }
 }

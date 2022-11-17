@@ -1,4 +1,4 @@
-package com.xauv.algorithm.算法.字符串匹配;
+package com.xauv.algorithm.算法.字符串;
 /*
        /\   /\             /\.__                      
 ___  __)/___)/  __ _____  _)/|  |   _______  __ ____  
@@ -14,7 +14,7 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
  * @Package com.xauv.algorithm.算法.字符串匹配
  * @Desc
  */
-public class StringMatch {
+public class 字符串字串所在为止 {
 
     /**
      * 查询字符串匹配的位置
