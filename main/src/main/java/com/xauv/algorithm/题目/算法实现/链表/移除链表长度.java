@@ -40,7 +40,7 @@ public class 移除链表长度 {
         ListNode node = head;
         while (node != null) {
             ListNode next = node.getNext();
-            if (node.value == val) {
+            if (node.val == val) {
                 // 如果 prev 为空，表示删除头节点，
                 if (prev == null) {
                     head = next;

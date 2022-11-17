@@ -22,7 +22,7 @@ public class ListUtil {
             if (cur == null) {
                 break;
             }
-            System.out.print(cur.getValue() + " ");
+            System.out.print(cur.getVal() + " ");
             cur = cur.getNext();
         }
     }

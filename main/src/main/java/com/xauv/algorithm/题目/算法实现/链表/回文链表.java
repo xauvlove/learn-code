@@ -12,7 +12,6 @@ import com.xauv.algorithm.题目.数据结构.ListFactory;
 import com.xauv.algorithm.题目.数据结构.ListNode;
 
 import java.util.Objects;
-import java.util.Stack;
 
 /**
  * @Date 2022/11/12 20:06
@@ -70,7 +69,7 @@ public class 回文链表 {
         }
         // 如果链表节点数量为 2，只需判断两者值
         if (head.next.next == null) {
-            return Objects.equals(head.value, head.next.value);
+            return Objects.equals(head.val, head.next.val);
         }
 
         // 1.找到中间节点
@@ -84,7 +83,7 @@ public class 回文链表 {
         // 这里不判断左指针
         while (r != null) {
             // 左右指针元素不相等，则表示不对称
-            if (!Objects.equals(l.value, r.value)) {
+            if (!Objects.equals(l.val, r.val)) {
                 return false;
             }
             // 双端指针往中间移动

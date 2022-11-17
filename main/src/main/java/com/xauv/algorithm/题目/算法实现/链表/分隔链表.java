@@ -53,7 +53,7 @@ public class 分隔链表 {
         ListNode node = head;
 
         while (node != null) {
-            if (node.value < val) {
+            if (node.val < val) {
                 cur1.next = node;
                 cur1 = cur1.next;
                 node = node.next;

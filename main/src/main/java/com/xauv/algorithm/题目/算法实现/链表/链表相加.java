@@ -48,12 +48,12 @@ public class 链表相加 {
 
         boolean exc = false;
         while (node1 != null && node2 != null) {
-            node1.value = node1.value + node2.value;
+            node1.val = node1.val + node2.val;
             if (exc) {
-                node1.value = node1.value + 1;
+                node1.val = node1.val + 1;
             }
-            if (node1.value >= 10) {
-                node1.value = node1.value - 10;
+            if (node1.val >= 10) {
+                node1.val = node1.val - 10;
                 exc = true;
             } else {
                 exc = false;
@@ -76,10 +76,10 @@ public class 链表相加 {
             prev1.next = prev2.next;
             while (node2 != null) {
                 if (exc) {
-                    node2.value = node2.value + 1;
+                    node2.val = node2.val + 1;
                 }
-                if (node2.value >= 10) {
-                    node2.value = node2.value - 10;
+                if (node2.val >= 10) {
+                    node2.val = node2.val - 10;
                     exc = true;
                 } else {
                     exc = false;
@@ -96,10 +96,10 @@ public class 链表相加 {
             ListNode prev = prev1;
             while (node1 != null) {
                 if (exc) {
-                    node1.value = node1.value + 1;
+                    node1.val = node1.val + 1;
                 }
-                if (node1.value >= 10) {
-                    node1.value = node1.value - 10;
+                if (node1.val >= 10) {
+                    node1.val = node1.val - 10;
                     exc = true;
                 } else {
                     exc = false;

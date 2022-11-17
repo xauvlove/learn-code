@@ -32,7 +32,7 @@ public class 链表反转 {
             if (cur == null) {
                 break;
             }
-            System.out.print(cur.getValue() + " ");
+            System.out.print(cur.getVal() + " ");
             cur = cur.getNext();
         }
         System.out.println();

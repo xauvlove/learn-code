@@ -8,6 +8,9 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
       \/     \/                                    \/
 */
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -43,6 +46,22 @@ public class ListFactory {
         return head;
     }
 
+    public static ListNode initListBySizeInc(int size) {
+        ListNode head = new ListNode(0);
+        ListNode node = head;
+        List<Integer> nums = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            nums.add(random.nextInt(100));
+        }
+        nums.sort(Comparator.comparingInt(i -> i));
+        for (int i = 1; i <= size; i++) {
+            ListNode n1 = new ListNode(nums.get(i-1));
+            node.next = n1;
+            node = n1;
+        }
+        return head;
+    }
+
     public static ListNode initListBySize(int size) {
         ListNode head = new ListNode(random.nextInt(10));
         ListNode node = head;
@@ -61,9 +80,9 @@ public class ListFactory {
         ListNode node = head;
         while (node != null) {
             if (node == head) {
-                System.out.print(node.getValue() + " ");
+                System.out.print(node.getVal() + " ");
             } else {
-                System.out.print("-> " + node.getValue() + " ");
+                System.out.print("-> " + node.getVal() + " ");
             }
             node = node.getNext();
         }

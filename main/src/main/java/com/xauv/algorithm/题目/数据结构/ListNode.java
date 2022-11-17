@@ -21,12 +21,12 @@ import java.io.Serializable;
 @Data
 public class ListNode implements Serializable {
 
-    public Integer value;
+    public Integer val;
 
     public ListNode next;
 
     public ListNode(int value) {
-        this.value = value;
+        this.val = value;
     }
 
     public ListNode() {
@@ -35,7 +35,7 @@ public class ListNode implements Serializable {
     @Override
     public String toString() {
         return "ListNode{" +
-                "value=" + value +
+                "value=" + val +
                 '}';
     }
 }
