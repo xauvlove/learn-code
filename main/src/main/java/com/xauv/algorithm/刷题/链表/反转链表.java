@@ -1,4 +1,4 @@
-package com.xauv.algorithm.刷题;
+package com.xauv.algorithm.刷题.链表;
 
 import com.xauv.algorithm.题目.数据结构.ListNode;
 

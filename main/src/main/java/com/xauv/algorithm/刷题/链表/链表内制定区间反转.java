@@ -1,4 +1,4 @@
-package com.xauv.algorithm.刷题;
+package com.xauv.algorithm.刷题.链表;
 
 import com.xauv.algorithm.题目.数据结构.ListFactory;
 import com.xauv.algorithm.题目.数据结构.ListNode;
@@ -30,35 +30,7 @@ public class 链表内制定区间反转 {
         if (m == n) {
             return head;
         }
-        ListNode cur = head;
-        ListNode prev = null;
 
-        ListNode start = null;
-        // 找到第 m 个元素
-        for (int i = 1; i < m; i++) {
-            prev = cur;
-            if (i == m-1) {
-                start = cur;
-            }
-            cur = cur.next;
-        }
-
-        // 反转
-        ListNode reverseHead = cur;
-        prev = null;
-        cur = head;
-        while (cur != null && n >0) {
-            ListNode next = cur.next;
-            cur.next = prev;
-            prev = cur;
-            cur = next;
-            n--;
-        }
-
-        if (prev != null) {
-            start.next = prev;
-            reverseHead.next = cur;
-        }
         return head;
     }
 
