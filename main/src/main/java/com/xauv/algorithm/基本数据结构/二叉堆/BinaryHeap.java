@@ -37,7 +37,7 @@ import java.util.Iterator;
  *
  * @Desc
  */
-@SuppressWarnings("JavadocBlankLines")
+@SuppressWarnings({"JavadocBlankLines", "unchecked", "rawtype"})
 public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
 
     private E[] elements;

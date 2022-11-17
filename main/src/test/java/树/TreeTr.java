@@ -2,6 +2,8 @@ package 树;
 
 import com.xauv.algorithm.题目.数据结构.TreeNode;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 import static com.xauv.algorithm.题目.数据结构.TreeFactory.init;
@@ -28,62 +30,57 @@ public class TreeTr {
         System.out.println("后序：");
         after(root);
         System.out.println();
+
+        System.out.println("层高：" + level2(root));
+
     }
+
+
 
     public static void after(TreeNode node) {
         Stack<TreeNode> stack = new Stack<>();
-        stack.push(node);
-        TreeNode prev = null;
-        while (!stack.isEmpty()) {
-            TreeNode peek = stack.peek();
-            TreeNode left = peek.left;
-            TreeNode right = peek.right;
-            if ((left == null && right == null) || (prev != null && (prev == left || prev == right))) {
-                TreeNode pop = stack.pop();
-                System.out.println(pop.code);
-                prev = pop;
-            } else {
-                if (right != null) {
-                    stack.push(right);
-                }
-                if (left != null) {
-                    stack.push(left);
-                }
-            }
-        }
+
     }
 
     public static void mid(TreeNode node) {
         Stack<TreeNode> stack = new Stack<>();
-        while (true) {
-            if (node != null) {
-                stack.push(node);
-                node = node.left;
-            } else if (stack.isEmpty()) {
-                break;
-            } else {
-                TreeNode pop = stack.pop();
-                System.out.println(pop.code);
-                node = pop.right;
-            }
-        }
+
     }
 
     public static void before(TreeNode node) {
         Stack<TreeNode> stack = new Stack<>();
 
+    }
+
+    public static int level(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+        TreeNode left = node.left;
+        TreeNode right = node.right;
+        return Math.max(level(left), level(right)) +1;
+    }
+
+    public static int level2(TreeNode node) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(node);
+        int level = 1;
         while (true) {
-            if (node != null) {
-                System.out.println(node.code);
-                if (node.right != null) {
-                    stack.push(node.right);
-                }
-                node = node.left;
-            } else if (stack.isEmpty()) {
+            TreeNode poll = queue.poll();
+            if (poll == null) {
+
                 break;
-            } else {
-                node = stack.pop();
+            }
+            if (queue.isEmpty()) {
+                level++;
+            }
+            if (poll.left != null) {
+                queue.offer(poll.left);
+            }
+            if (poll.right != null) {
+                queue.offer(poll.right);
             }
         }
+        return level;
     }
 }

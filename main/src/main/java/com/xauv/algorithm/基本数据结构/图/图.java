@@ -68,14 +68,14 @@ public class 图 {
 
         // ---------------初始化--------------
         ListGraph<String, Double> graph = new ListGraph<>(weightManager);
-        for (int i = 0; i < Data.MST_02.length; i++) {
-            Object[] objects = Data.MST_02[i];
+        for (int i = 0; i < Data.WEIGHT3.length; i++) {
+            Object[] objects = Data.WEIGHT3[i];
             if (objects.length == 2) {
                 graph.addEdge(objects[0].toString(), objects[1].toString());
-                //graph.addEdge(objects[1].toString(), objects[0].toString());
+                graph.addEdge(objects[1].toString(), objects[0].toString());
             } else {
                 graph.addEdge(objects[0].toString(), objects[1].toString(), (double) (int) objects[2]);
-                //graph.addEdge(objects[1].toString(), objects[0].toString(), (double) (int) objects[2]);
+                graph.addEdge(objects[1].toString(), objects[0].toString(), (double) (int) objects[2]);
             }
 
         }
@@ -116,7 +116,7 @@ public class 图 {
         }
 
         System.out.println("--------------- Bellman-Ford 最短路经 --------------");
-        pathInfos = graph.calShortPathByBellmanFord("A");
+        pathInfos = graph.calShortPathByBellmanFord("广州");
         for (Map.Entry<String, Graph.PathInfo<String, Double>> entry : pathInfos.entrySet()) {
             System.out.println(entry);
         }

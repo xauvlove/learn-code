@@ -58,7 +58,7 @@ public class 最长上升子序列 {
     }
 
     public static void main(String[] args) {
-        int[] array = {10, 2, 2, 5, 7, 1, 101, 18};
-        System.out.println(maxIncreaseSubsequence(array));
+        int[] arr = {3, 1, 5, 6, 4, 7, 9, 10, 8, 11};
+        System.out.println(maxIncreaseSubsequence(arr));
     }
 }
