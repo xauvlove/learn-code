@@ -14,7 +14,7 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
  * @Package com.xauv.algorithm.算法.字符串匹配
  * @Desc
  */
-public class 字符串字串所在为止 {
+public class 字符串字串所在位置 {
 
     /**
      * 查询字符串匹配的位置
