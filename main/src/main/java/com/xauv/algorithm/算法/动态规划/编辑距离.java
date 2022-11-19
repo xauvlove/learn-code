@@ -163,14 +163,18 @@ public class 编辑距离 {
 
         for (int i = 1; i <= cs1.length; i++) {
             for (int j = 1; j <= cs2.length; j++) {
+                // 尝试情况 1
                 int left = dp[i-1][j] + 1;
+                // 尝试情况 2
                 int top = dp[i][j-1] + 1;
+                // 尝试情况 3 和 4
                 int leftTop;
                 if (cs1[i-1] == cs2[j-1]) {
                     leftTop = dp[i-1][j-1];
                 } else {
                     leftTop = dp[i-1][j-1] + 1;
                 }
+                // 4 种情况取最小
                 dp[i][j] = Math.min(Math.min(left, top), leftTop);
             }
         }
@@ -178,8 +182,8 @@ public class 编辑距离 {
     }
 
     public static void main(String[] args) {
-        String s1 = "ab";
-        String s2 = "b";
+        String s1 = "horse";
+        String s2 = "ros";
         System.out.println(editDistance(s1, s2));
     }
 }
