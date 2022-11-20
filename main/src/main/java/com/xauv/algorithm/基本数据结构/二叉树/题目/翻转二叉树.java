@@ -28,6 +28,7 @@ public class 翻转二叉树 {
 
     public static void main(String[] args) {
         TreeNode init = TreeFactory.init(7);
+
     }
 
     /**

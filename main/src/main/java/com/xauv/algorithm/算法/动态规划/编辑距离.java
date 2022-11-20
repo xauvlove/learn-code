@@ -182,8 +182,8 @@ public class 编辑距离 {
     }
 
     public static void main(String[] args) {
-        String s1 = "horse";
-        String s2 = "ros";
+        String s1 = "我和我的祖国";
+        String s2 = "我和祖国";
         System.out.println(editDistance(s1, s2));
     }
 }

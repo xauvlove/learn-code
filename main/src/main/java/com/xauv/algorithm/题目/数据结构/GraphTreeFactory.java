@@ -9,6 +9,7 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
 */
 
 import com.xauv.algorithm.基本数据结构.二叉树.utils.BinaryTreeInfo;
+import com.xauv.algorithm.基本数据结构.二叉树.utils.BinaryTrees;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,12 @@ import java.util.List;
  * @Desc
  */
 public class GraphTreeFactory implements BinaryTreeInfo {
+
+    public static void main(String[] args) {
+        GraphTreeFactory tree = new GraphTreeFactory();
+        TreeNode init = tree.init(7);
+        BinaryTrees.println(tree);
+    }
 
     TreeNode root;
 

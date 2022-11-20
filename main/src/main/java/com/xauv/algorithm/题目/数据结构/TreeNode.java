@@ -32,4 +32,9 @@ public class TreeNode {
     public TreeNode(int code) {
         this.code = code;
     }
+
+    @Override
+    public String toString() {
+        return "code=" + code;
+    }
 }
