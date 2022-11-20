@@ -9,7 +9,9 @@ ___  __)/___)/  __ _____  _)/|  |   _______  __ ____
 */
 
 import com.xauv.algorithm.基本数据结构.二叉树.utils.BinaryTrees;
+import com.xauv.algorithm.基本数据结构.二叉树.二叉平衡搜索树.AVLTree;
 import com.xauv.algorithm.基本数据结构.二叉树.二叉搜索树.BinarySearchTree;
+import com.xauv.algorithm.题目.数据结构.GraphTreeFactory;
 import com.xauv.algorithm.题目.数据结构.TreeFactory;
 import com.xauv.algorithm.题目.数据结构.TreeNode;
 
@@ -102,24 +104,65 @@ public class 最大二叉搜索树 {
         if (root == null) {
             return 0;
         }
-        if (isBst(root)) {
-            return nodeCount(root);
-        }
-        return Math.max(largestBstSubtree(root.left), largestBstSubtree(root.right));
+
+        return -1;
     }
 
     private static int nodeCount(TreeNode root) {
-
-        return 1;
+        if (root == null) {
+            return 0;
+        }
+        return nodeCount(root.left) + nodeCount(root.right) + 1;
     }
 
     private static boolean isBst(TreeNode root) {
+        return isBst(root, root.left, root.right);
+    }
 
-        return false;
+    private static boolean isBst(TreeNode root, TreeNode left, TreeNode right) {
+        if (root == null) {
+            return true;
+        }
+        if (left != null && left.code > root.code) {
+            return false;
+        }
+        if (right != null && right.code < root.code) {
+            return false;
+        }
+        if (left != null && right != null) {
+            return isBst(left, left.left, left.right) && isBst(right, right.left, right.right);
+        }
+        return true;
     }
 
     public static void main(String[] args) {
-        BinarySearchTree<Integer> integerBinarySearchTree = TreeFactory.initBst(10);
-        BinaryTrees.println(integerBinarySearchTree);
+        // 模拟搜索二叉树
+        AVLTree<Integer> avlTree = new AVLTree<>();
+        avlTree.add(1);
+        avlTree.add(2);
+        avlTree.add(3);
+        avlTree.add(4);
+        avlTree.add(5);
+        avlTree.add(6);
+        avlTree.add(7);
+
+        BinaryTrees.println(avlTree);
+
+        // 创建二叉搜索树
+        TreeNode root = new TreeNode(4);
+        TreeNode n2 = new TreeNode(2);
+        TreeNode n3 = new TreeNode(6);
+        TreeNode n4 = new TreeNode(1);
+        TreeNode n5 = new TreeNode(3);
+        TreeNode n6 = new TreeNode(5);
+        TreeNode n7 = new TreeNode(7);
+        root.left = n2;
+        root.right = n3;
+        n2.left = n4;
+        n2.right = n5;
+        n3.left = n6;
+        n3.right = n7;
+
+        System.out.println(largestBstSubtree(root));
     }
 }
