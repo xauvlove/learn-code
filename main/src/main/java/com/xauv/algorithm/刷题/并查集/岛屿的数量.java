@@ -3,7 +3,7 @@ package com.xauv.algorithm.刷题.并查集;
 
 /**
  * @author: Bing Juan
- * @date: 2022/11/18 15 06
+ * @date: 2022/11/18 15:06
  * @desc:
  *
  * [1, 1, 0, 0, 0]
