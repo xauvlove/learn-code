@@ -554,10 +554,17 @@ public class ListGraph<V, E> extends AbstractGraph<V, E> {
         }
     }
 
+    public Set<Vertex<V, E>> vertices() {
+        return new HashSet<>(vertices.values());
+    }
+    public Set<Edge<V, E>> edges() {
+        return edges;
+    }
+
     /**
      * 顶点
      */
-    private static class Vertex<V, E> {
+    public static class Vertex<V, E> {
 
         // 顶点值
         V value;
@@ -569,6 +576,10 @@ public class ListGraph<V, E> extends AbstractGraph<V, E> {
         // 以该顶点为起点的边
         // A->B A->C，则以 A 为起点有两条边
         Set<Edge<V, E>> outEdges = new HashSet<>();
+
+        public V val() {
+            return value;
+        }
 
         public Vertex(V value) {
             this.value = value;
@@ -596,7 +607,7 @@ public class ListGraph<V, E> extends AbstractGraph<V, E> {
     /**
      * 边
      */
-    private static class Edge<V, E> {
+    public static class Edge<V, E> {
 
         // 起点
         Vertex<V, E> from;
@@ -606,6 +617,14 @@ public class ListGraph<V, E> extends AbstractGraph<V, E> {
 
         // 边的权重
         E weight;
+
+        public Vertex<V, E> from() {
+            return from;
+        }
+
+        public Vertex<V, E> to() {
+            return to;
+        }
 
         public Edge(Vertex<V, E> from, Vertex<V, E> to) {
             this.from = from;
