@@ -18,6 +18,10 @@ public class TreeNode<E> {
 
     List<TreeNode<E>> children = new LinkedList<>();
 
+    public TreeNode(E val) {
+        this.val = val;
+    }
+
     public TreeNode(E val, TreeNode<E> parent) {
         this.parent = parent;
         this.val = val;
