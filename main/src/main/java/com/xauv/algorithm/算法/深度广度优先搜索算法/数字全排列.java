@@ -23,9 +23,9 @@ import java.util.List;
  * 输入： 1 2 3
  * 输出：[1 2 3] [1 3 2] [2 1 3] [2 3 1] [3 1 2] [3 2 1]
  */
-public class 全排列 {
+public class 数字全排列 {
 
-    public static List<String> all(String digits) {
+    public static List<String> allArrange(String digits) {
 
         if (digits == null || digits.equals("")) {
             return new ArrayList<>();
@@ -50,17 +50,11 @@ public class 全排列 {
 
         // 找出所有下一层的选择
         List<Character> choose = new ArrayList<>();
-        for (char d : ds) {
-            boolean find = true;
-            for (int j = 0; j < len; j++) {
-                if (d == ls[j]) {
-                    find = false;
-                    break;
-                }
-            }
-            if (find) {
-                choose.add(d);
-            }
+        for (Character d : ds) {
+            choose.add(d);
+        }
+        for (Character l : ls) {
+            choose.remove(l);
         }
         // 进行下一层的选择
         for (Character character : choose) {
@@ -70,7 +64,7 @@ public class 全排列 {
     }
 
     public static void main(String[] args) {
-        String s = "123456";
-        System.out.println(all(s));
+        String s = "123";
+        System.out.println(allArrange(s));
     }
 }
