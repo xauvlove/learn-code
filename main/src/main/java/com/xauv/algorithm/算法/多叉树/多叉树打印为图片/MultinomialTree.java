@@ -1,4 +1,4 @@
-package com.xauv.algorithm.算法.多叉树;
+package com.xauv.algorithm.算法.多叉树.多叉树打印为图片;
 
 import com.xauv.algorithm.基本数据结构.二叉树.utils.BinaryTreeInfo;
 
